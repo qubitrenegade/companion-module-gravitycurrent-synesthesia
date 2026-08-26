@@ -15,10 +15,10 @@ export type ModuleConfig = {
 
 export const DEFAULT_CONFIG: ModuleConfig = {
 	host: '127.0.0.1',
-	targetPort: 9000,
+	targetPort: 6000,
 	enableFeedback: true,
 	listenAddress: '0.0.0.0',
-	listenPort: 9001,
+	listenPort: 7000,
 	feedbackValueMode: 'normalized',
 	freshnessTimeoutMs: 5000,
 }

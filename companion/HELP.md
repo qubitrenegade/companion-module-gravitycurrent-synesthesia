@@ -4,18 +4,18 @@ This module sends documented OSC commands to Synesthesia Pro and can listen for 
 
 ## Suggested same-computer setup
 
-Ports `9000` and `9001` are convenient module defaults, not official Synesthesia requirements. Any available UDP ports work when both applications use the same mapping.
+The module defaults match Synesthesia's displayed OSC defaults: input port `6000` and output port `7000`. Any available UDP ports work when both applications use the same mapping.
 
 | Direction | Sender                 | Receiver                    | Suggested destination |
 | --------- | ---------------------- | --------------------------- | --------------------- |
-| Control   | Companion              | Synesthesia OSC Input       | `127.0.0.1:9000`      |
-| State     | Synesthesia OSC Output | Companion feedback listener | `127.0.0.1:9001`      |
+| Control   | Companion              | Synesthesia OSC Input       | `127.0.0.1:6000`      |
+| State     | Synesthesia OSC Output | Companion feedback listener | `127.0.0.1:7000`      |
 
 1. In Synesthesia, open Settings and find OSC.
-2. Enable **Input** and set **Input Port** to `9000`.
-3. In the Companion connection, set **Synesthesia host or IP** to `127.0.0.1` and **Synesthesia OSC input port** to `9000`.
-4. To receive state, enable **Output** in Synesthesia. Set **Output Address** to `127.0.0.1` and **Output Port** to `9001`.
-5. In Companion, enable **Listen for OSC feedback**, use local listen address `0.0.0.0`, and set the listen port to `9001`.
+2. Enable **Input** and set **Input Port** to `6000`.
+3. In the Companion connection, set **Synesthesia host or IP** to `127.0.0.1` and **Synesthesia OSC input port** to `6000`.
+4. To receive state, enable **Output** in Synesthesia. Set **Output Address** to `127.0.0.1` and **Output Port** to `7000`.
+5. In Companion, enable **Listen for OSC feedback**, use local listen address `0.0.0.0`, and set the listen port to `7000`.
 6. In Synesthesia, choose **Global Addresses** and **Output Normalized Values**. In Companion, choose the matching **Normalized (0 to 1)** expectation.
 7. Leave Synesthesia's audio-variable output disabled. It is high-volume and this module does not process it.
 

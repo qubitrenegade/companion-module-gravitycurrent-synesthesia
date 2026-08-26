@@ -3,14 +3,14 @@ import test from 'node:test'
 import { normalizeConfig, validateConfig } from '../dist/config.js'
 import { UpgradeScripts } from '../dist/upgrades.js'
 
-test('configuration applies the suggested defaults and validates hosts, addresses, and ports', () => {
+test('configuration applies the Synesthesia defaults and validates hosts, addresses, and ports', () => {
 	const config = normalizeConfig({})
 	assert.deepEqual(config, {
 		host: '127.0.0.1',
-		targetPort: 9000,
+		targetPort: 6000,
 		enableFeedback: true,
 		listenAddress: '0.0.0.0',
-		listenPort: 9001,
+		listenPort: 7000,
 		feedbackValueMode: 'normalized',
 		freshnessTimeoutMs: 5000,
 	})
@@ -32,5 +32,5 @@ test('upgrade preserves the scaffold target port while adding feedback defaults'
 	)
 	assert.equal(result.updatedConfig.host, '192.168.1.20')
 	assert.equal(result.updatedConfig.targetPort, 8123)
-	assert.equal(result.updatedConfig.listenPort, 9001)
+	assert.equal(result.updatedConfig.listenPort, 7000)
 })
