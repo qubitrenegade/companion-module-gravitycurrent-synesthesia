@@ -1,0 +1,28 @@
+{
+	"$schema": "../node_modules/@companion-module/base/assets/manifest.schema.json",
+	"type": "connection",
+	"id": "gravitycurrent-synesthesia",
+	"name": "gravitycurrent-synesthesia",
+	"shortname": "Synesthesia",
+	"description": "Control Synesthesia Pro and receive state through OSC",
+	"version": "0.0.0",
+	"license": "MIT",
+	"repository": "git+https://github.com/qubitrenegade/companion-module-gravitycurrent-synesthesia.git",
+	"bugs": "https://github.com/qubitrenegade/companion-module-gravitycurrent-synesthesia/issues",
+	"maintainers": [
+		{
+			"name": "qubitrenegade",
+			"email": "qubitrenegade@gmail.com"
+		}
+	],
+	"runtime": {
+		"type": "node22",
+		"api": "nodejs-ipc",
+		"apiVersion": "0.0.0",
+		"entrypoint": "../dist/main.js"
+	},
+	"legacyIds": [],
+	"manufacturer": "Gravity Current",
+	"products": ["Synesthesia Pro"],
+	"keywords": ["Visuals", "OSC", "VJ"]
+}
