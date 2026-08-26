@@ -188,6 +188,9 @@ export function GetActionDefinitions(self: ModuleInstance): CompanionActionDefin
 			],
 			callback: (event) => {
 				const position = parseInteger(event.options.position, 'position', 1, 16)
+				if (self.config.feedbackValueMode !== 'normalized' || !self.state.isFeedbackFresh()) {
+					throw new Error('Relative adjustment requires fresh normalized OSC feedback')
+				}
 				const current = self.state.getNumericValue(event.options.type, position)
 				if (current === undefined) throw new Error('No feedback value has been received for this global control')
 				const delta = parseNumber(event.options.delta, 'adjustment')

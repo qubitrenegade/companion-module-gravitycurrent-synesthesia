@@ -6,7 +6,8 @@ function makeInstance() {
 	const sent = []
 	return {
 		sent,
-		state: { getNumericValue: () => 0.5 },
+		config: { feedbackValueMode: 'normalized' },
+		state: { getNumericValue: () => 0.5, isFeedbackFresh: () => true },
 		sendOsc(address, args) {
 			sent.push({ address, args })
 		},
@@ -66,4 +67,22 @@ test('relative rotary action uses the last inbound state and clamps normalized o
 
 	await run(actions.adjust_global_scalar, { type: 'slider', position: '1', delta: '0.05' })
 	assert.deepEqual(instance.sent, [{ address: '/controls/global/slider/1', args: [{ type: 'f', value: 1 }] }])
+})
+
+test('relative rotary action rejects stale or raw feedback state', async () => {
+	const instance = makeInstance()
+	const actions = GetActionDefinitions(instance)
+	instance.state.isFeedbackFresh = () => false
+	await assert.rejects(
+		() => run(actions.adjust_global_scalar, { type: 'slider', position: '1', delta: '0.05' }),
+		/requires fresh normalized/,
+	)
+
+	instance.state.isFeedbackFresh = () => true
+	instance.config.feedbackValueMode = 'raw'
+	await assert.rejects(
+		() => run(actions.adjust_global_scalar, { type: 'slider', position: '1', delta: '0.05' }),
+		/requires fresh normalized/,
+	)
+	assert.equal(instance.sent.length, 0)
 })
