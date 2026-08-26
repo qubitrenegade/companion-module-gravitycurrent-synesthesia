@@ -1154,6 +1154,7 @@ __metadata:
     eslint: "npm:^10.2.0"
     husky: "npm:^9.1.7"
     lint-staged: "npm:^16.4.0"
+    node-osc: "npm:^11.7.0"
     prettier: "npm:^3.8.3"
     rimraf: "npm:^6.1.3"
     typescript: "npm:~6.0.3"
@@ -1374,6 +1375,13 @@ __metadata:
   version: 1.4.0
   resolution: "natural-compare@npm:1.4.0"
   checksum: 10c0/f5f9a7974bfb28a91afafa254b197f0f22c684d4a1731763dda960d2c8e375b36c7d690e0d9dc8fba774c537af14a7e979129bca23d88d052fbeb9466955e447
+  languageName: node
+  linkType: hard
+
+"node-osc@npm:^11.7.0":
+  version: 11.7.0
+  resolution: "node-osc@npm:11.7.0"
+  checksum: 10c0/0b556530e3327ea9d51045eaff71876a7186541e18aa18f47c106b51698f95999b506a76eec065e618419acd9e2673d10fb33d59e15051e7a0f9379066500bc5
   languageName: node
   linkType: hard
 

@@ -9,6 +9,7 @@
 		"package": "run build && companion-module-build",
 		"build": "rimraf dist && run build:main",
 		"build:main": "tsc -p tsconfig.build.json",
+		"test": "yarn build && node --test tests/*.test.js",
 		"dev": "tsc -p tsconfig.build.json --watch",
 		"lint:raw": "eslint",
 		"lint": "run lint:raw ."
@@ -23,7 +24,8 @@
 		"yarn": "^4"
 	},
 	"dependencies": {
-		"@companion-module/base": "2.0.4"
+		"@companion-module/base": "2.0.4",
+		"node-osc": "^11.7.0"
 	},
 	"devDependencies": {
 		"@companion-module/tools": "^3.0.1",
