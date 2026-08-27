@@ -10,6 +10,7 @@ Synesthesia's OSC API is documented at <https://synesthesia.live/docs/manual/osc
 - `src/osc.ts` owns the inbound UDP listener boundary, safely normalizes messages and bundles, parses only documented MVP state routes, and rate-limits diagnostics for unsupported paths.
 - `src/state.ts` stores typed scalar, toggle, bang, XY, RGB, and dropdown values. It coalesces packet bursts into bounded Companion variable and feedback updates and schedules the feedback freshness boundary.
 - `src/variables.ts`, `src/feedbacks.ts`, and `src/presets.ts` expose the state to Companion controls.
+- Preset template groups cover repeated global positions without generating hundreds of duplicate definition objects. Consequential project mutation, such as creating a preset from current state, uses a long-press control.
 - `src/main.ts` owns configuration transitions and disposes the old listener before binding a replacement.
 
 UDP does not provide a Synesthesia connection session or delivery acknowledgement. Module status describes local configuration and listener setup. The separate freshness feedback describes whether supported Synesthesia state arrived recently.

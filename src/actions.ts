@@ -9,6 +9,7 @@ import { GLOBAL_CONTROL_TYPES, type GlobalControlType } from './state.js'
 
 type EmptyOptions = Record<string, never>
 type PlayOptions = { shouldPlay: boolean }
+type RenderOptions = { enabled: boolean }
 type PositionOptions = { position: string }
 type NameOptions = { name: string }
 type SceneOptions = { scene: string; preset: string }
@@ -45,6 +46,7 @@ export type ActionsSchema = {
 	playlist_toggle_play: { options: EmptyOptions }
 	playlist_position: { options: PositionOptions }
 	playlist_select: { options: NameOptions }
+	render_enabled: { options: RenderOptions }
 	favslot_trigger: { options: PositionOptions }
 	launch_scene: { options: SceneOptions }
 	launch_preset: { options: PresetOptions }
@@ -54,6 +56,7 @@ export type ActionsSchema = {
 	set_scene_control: { options: ControlOptions }
 	set_global_control: { options: GlobalControlOptions }
 	adjust_global_scalar: { options: AdjustGlobalOptions }
+	toggle_global_toggle: { options: PositionOptions }
 	control_operation: { options: ControlOperationOptions }
 	bank_operation: { options: BankOperationOptions }
 	group_operation: { options: GroupOperationOptions }
@@ -82,6 +85,12 @@ export function GetActionDefinitions(self: ModuleInstance): CompanionActionDefin
 			options: [textField('name', 'Playlist name')],
 			callback: (event) =>
 				send(self, '/playlist/select', [stringArg(requireText(event.options.name, 'playlist name'))]),
+		},
+		render_enabled: {
+			name: 'Rendering: Set Enabled',
+			description: 'Control the pause button below the Synesthesia preview.',
+			options: [{ id: 'enabled', type: 'checkbox', label: 'Rendering enabled', default: true }],
+			callback: (event) => send(self, '/render/enabled', [integer(event.options.enabled ? 1 : 0)]),
 		},
 		favslot_trigger: {
 			name: 'Favslot: Trigger by Position',
@@ -196,6 +205,20 @@ export function GetActionDefinitions(self: ModuleInstance): CompanionActionDefin
 				const delta = parseNumber(event.options.delta, 'adjustment')
 				const next = Math.min(1, Math.max(0, current + delta))
 				return send(self, `/controls/global/${event.options.type}/${position}`, [floatArg(next)])
+			},
+		},
+		toggle_global_toggle: {
+			name: 'Global Toggle: Toggle from Feedback',
+			description: 'Invert a global toggle using the most recent normalized value received from Synesthesia.',
+			options: [positionField('position', 'Position')],
+			callback: (event) => {
+				const position = parseInteger(event.options.position, 'position', 1, 16)
+				if (self.config.feedbackValueMode !== 'normalized' || !self.state.isFeedbackFresh()) {
+					throw new Error('Toggle requires fresh normalized OSC feedback')
+				}
+				const current = self.state.getNumericValue('toggle', position)
+				if (current === undefined) throw new Error('No feedback value has been received for this global toggle')
+				return send(self, `/controls/global/toggle/${position}`, [floatArg(current === 0 ? 1 : 0)])
 			},
 		},
 		control_operation: {

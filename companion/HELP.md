@@ -63,6 +63,12 @@ Available state feedback includes:
 
 Scene launch output provides the current scene name. The documented API does not provide a list of every installed scene or preset, so the module does not promise enumeration.
 
+## Presets
+
+The preset catalog includes playlist transport, positions 1 through 16, favslots 1 through 4, rendering on and off, scene and preset launch templates, media selection, scene and meta bank operations, brightness levels, and OSC state indicators. Creating a preset changes the current Synesthesia project, so its supplied button requires a one-second hold.
+
+Global slider and knob rotary templates cover positions 1 through 16. Global toggle templates invert fresh normalized feedback and show the received on state. Global bang templates provide one trigger for each position. The richer Global Slider 1 preset retains the dynamic name and value LCD example described above.
+
 ## Troubleshooting
 
 - Turn on **Log OSC** in Synesthesia's console and trigger a Companion action. Confirm the expected path and argument arrive.

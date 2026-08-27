@@ -28,6 +28,7 @@ test('representative actions send documented routes with explicit OSC argument t
 	await run(actions.set_global_control, { type: 'xy', position: '1', values: '0.25, 0.75', raw: false })
 	await run(actions.bank_operation, { bank: 'meta', operation: 'lock', locked: true })
 	await run(actions.select_media, { mode: 'position', name: '', position: '3' })
+	await run(actions.render_enabled, { enabled: false })
 
 	assert.deepEqual(instance.sent, [
 		{ address: '/playlist/play', args: [{ type: 'i', value: 1 }] },
@@ -42,6 +43,7 @@ test('representative actions send documented routes with explicit OSC argument t
 		},
 		{ address: '/controls/banks/meta/lock', args: [{ type: 'f', value: 1 }] },
 		{ address: '/media/position', args: [{ type: 'i', value: 3 }] },
+		{ address: '/render/enabled', args: [{ type: 'i', value: 0 }] },
 	])
 })
 
@@ -85,4 +87,13 @@ test('relative rotary action rejects stale or raw feedback state', async () => {
 		/requires fresh normalized/,
 	)
 	assert.equal(instance.sent.length, 0)
+})
+
+test('global toggle action inverts the last fresh normalized value', async () => {
+	const instance = makeInstance()
+	const actions = GetActionDefinitions(instance)
+	instance.state.getNumericValue = () => 0
+
+	await run(actions.toggle_global_toggle, { position: '4' })
+	assert.deepEqual(instance.sent, [{ address: '/controls/global/toggle/4', args: [{ type: 'f', value: 1 }] }])
 })
