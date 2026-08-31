@@ -324,7 +324,7 @@ export function UpdatePresets(self: ModuleInstance): void {
 
 	for (let position = 1; position <= 10; position++) {
 		presets[`favslot_${position}`] = button(
-			`Favslot ${position}`,
+			`Fav ${position}`,
 			`FAV\n${position}`,
 			purple,
 			action('favslot_trigger', { position: String(position) }),

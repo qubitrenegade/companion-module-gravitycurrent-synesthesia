@@ -2,9 +2,9 @@
 
 This project follows Semantic Versioning. Release-specific behavior and known issues are recorded here. Enduring setup constraints are documented in the README and Companion help file.
 
-## Next release (planned `1.0.0-beta.1`)
+## 1.0.0-beta.1 - 2026-08-31
 
-This will be the module's first public beta. Development packages such as `0.1.0-dev.27` are local test builds, not earlier public releases.
+First public beta. Development packages such as `0.1.0-dev.27` are local test builds, not earlier public releases.
 
 ### Added
 

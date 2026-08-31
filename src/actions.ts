@@ -120,8 +120,8 @@ export function GetActionDefinitions(self: ModuleInstance): CompanionActionDefin
 			callback: (event) => send(self, '/render/enabled', [integer(event.options.enabled ? 1 : 0)]),
 		},
 		favslot_trigger: {
-			name: 'Favslot: Trigger by Position',
-			options: [positionField('position', 'Favslot position')],
+			name: 'Fav: Trigger by Position',
+			options: [positionField('position', 'Fav position')],
 			callback: (event) => send(self, `/favslots/${parseInteger(event.options.position, 'position', 1)}`),
 		},
 		launch_scene: {
@@ -168,7 +168,7 @@ export function GetActionDefinitions(self: ModuleInstance): CompanionActionDefin
 		cycle_configured_preset: {
 			name: 'Preset: Previous/Next Learned for Current Scene',
 			description:
-				'Cycle default, legacy configured names, and presets created through Companion, persisted separately for the current scene. Existing Synesthesia preset names are not exposed over OSC.',
+				'Cycle default, legacy configured names, and presets created through Companion, persisted separately for the current scene. The documented OSC interface does not currently include the existing Synesthesia preset catalog.',
 			options: [
 				{
 					id: 'direction',
@@ -326,7 +326,7 @@ export function GetActionDefinitions(self: ModuleInstance): CompanionActionDefin
 		toggle_bank_lock: {
 			name: 'Control Bank: Toggle Locally Tracked Lock',
 			description:
-				'Synesthesia does not output bank lock state. This toggles the state last sent by this Companion connection.',
+				'The documented OSC output does not currently include bank lock state. This toggles the state last sent by this Companion connection.',
 			options: [
 				{
 					id: 'bank',

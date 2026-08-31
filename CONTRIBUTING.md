@@ -39,7 +39,7 @@ Please test changes against representative scenes with:
 - multiple pages of controls
 - XY and RGB controls
 - default, random, undo, and lock operations
-- favslots and media navigation
+- Fav positions and media navigation
 
 When reporting an OSC issue, include the Synesthesia version, Companion version, module version, control address format, value output mode, the exact OSC address and arguments when available, and a short reproduction sequence.
 
@@ -62,7 +62,7 @@ Do not include Companion configuration exports, logs, tokens, or other local sec
 
 ## Versioning and releases
 
-Development builds use prerelease versions such as `0.1.0-dev.27`. The planned first public beta is `1.0.0-beta.1`. Additional beta fixes increment the beta number. Once the documented release criteria are met, the accepted beta line can be released as `1.0.0`.
+Development builds use prerelease versions such as `0.1.0-dev.27`. The first public beta candidate is `1.0.0-beta.1`. Additional beta fixes increment the beta number. Once the documented release criteria are met, the accepted beta line can be released as `1.0.0`.
 
 Before a release:
 

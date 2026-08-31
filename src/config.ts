@@ -164,7 +164,7 @@ export function GetConfigFields(): SomeCompanionConfigField[] {
 			width: 12,
 			label: 'Preset navigation',
 			value:
-				'Preset Previous/Next remembers presets created through Companion per scene and preserves that catalog across restarts. Synesthesia does not expose existing preset names or native preset-step routes over OSC; Fav 1 through 10 remain available for existing presets.',
+				'Preset Previous/Next remembers presets created through Companion per scene and preserves that catalog across restarts. The documented OSC interface does not currently include existing preset names or native preset-step routes; Fav 1 through 10 remain available for existing presets.',
 		},
 	]
 }

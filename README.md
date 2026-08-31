@@ -8,7 +8,7 @@ Synesthesia's OSC API is documented at <https://synesthesia.live/docs/manual/osc
 
 - Typed Companion actions for playlists, favs, scenes, presets, media, controls, banks, groups, rendering, and locks.
 - Optional OSC feedback for scene names, active global-control names, normalized values, toggles, XY controls, and RGB colors.
-- A dynamic performance surface with Scene, Meta, Media, and Favs modes.
+- A device-agnostic dynamic performance surface with Scene, Meta, Media, and Favs modes.
 - Shared paging that keeps one-page button groups visible while additional rotary controls are paged.
 - Fav access for positions 1 through 10, with overlapping pages for fast navigation.
 - RGB and XY component selection from the rotary LCD. Dial rotation adjusts the selected component and dial press restores the control default.
@@ -20,6 +20,8 @@ Synesthesia's OSC API is documented at <https://synesthesia.live/docs/manual/osc
 - Synesthesia Pro with OSC Input enabled.
 - Synesthesia OSC Output enabled for state-aware controls.
 - **Global Addresses** and **Output Normalized Values** selected in Synesthesia for the dynamic Scene surface.
+
+The module does not require a particular Stream Deck model. Dynamic actions and variables can be arranged on any Companion-supported surface. Included example pages target the Stream Deck + and Stream Deck + XL because their rotary controls demonstrate the full interaction model.
 
 ## Installation
 

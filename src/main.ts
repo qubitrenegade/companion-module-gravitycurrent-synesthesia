@@ -119,6 +119,7 @@ export default class ModuleInstance extends InstanceBase<ModuleSchema> {
 	}
 
 	setSurfaceMode(mode: SurfaceMode): void {
+		// Selecting Media again is the compact surface's deliberate controls/sources switch.
 		if (mode === 'media' && this.surfaceMode === 'media') {
 			this.mediaSourceView = !this.mediaSourceView
 		} else {
@@ -610,6 +611,8 @@ export default class ModuleInstance extends InstanceBase<ModuleSchema> {
 	}
 
 	private surfacePageCount(): number {
+		// One shared page index drives every control area. Each area clamps that index
+		// to page zero until it has enough controls to need paging of its own.
 		return Math.max(1, this.surfaceButtonPageCount(), Math.ceil(this.surfaceRotaries().length / SURFACE_ROTARY_SLOTS))
 	}
 
@@ -619,6 +622,7 @@ export default class ModuleInstance extends InstanceBase<ModuleSchema> {
 			return pageItem(this.surfaceTopButtons(), SURFACE_TOP_BUTTON_SLOTS, slot - 1, this.surfacePage)
 		}
 		if (this.surfaceMode === 'favs') {
+			// The two Fav pages intentionally overlap: 1-9, then 2-10.
 			const position = slot - SURFACE_TOP_BUTTON_SLOTS - 1
 			const start = this.surfacePage === 0 ? 0 : 1
 			return this.surfacePagedButtons()[start + position]

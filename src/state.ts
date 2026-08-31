@@ -16,8 +16,8 @@ export type MetaControlDefinition = {
  * Meta controls are part of Synesthesia itself rather than an individual scene.
  * Unlike global scene controls, OSC output does not send type/name metadata for
  * them, so their stable schema has to be classified here. These identifiers and
- * types come from Synesthesia 1.25.4's hydrated native control structure; unknown
- * future identifiers still fall back to dimensional discovery.
+ * types were observed in Synesthesia 1.25.4 and verified through OSC behavior;
+ * unknown future identifiers still fall back to dimensional discovery.
  */
 export const META_CONTROL_DEFINITIONS: readonly MetaControlDefinition[] = [
 	{ name: 'master', label: 'MASTER', kind: 'scalar', group: 'master' },

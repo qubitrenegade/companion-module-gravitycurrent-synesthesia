@@ -1,6 +1,6 @@
 {
 	"name": "gravitycurrent-synesthesia",
-	"version": "0.1.0-dev.27",
+	"version": "1.0.0-beta.1",
 	"main": "dist/main.js",
 	"type": "module",
 	"scripts": {

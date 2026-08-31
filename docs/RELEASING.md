@@ -4,8 +4,8 @@ Follow the official Bitfocus guides for [releasing a module](https://companion.f
 
 ## Version policy
 
-- Local hardware builds use versions such as `0.1.0-dev.26`.
-- The planned first public submission is `1.0.0-beta.1`.
+- Local hardware builds use versions such as `0.1.0-dev.27`.
+- The first public submission candidate is `1.0.0-beta.1`.
 - Mark beta submissions as prereleases in the Bitfocus Developer Portal.
 - Release `1.0.0` after the beta meets the hardware, documentation, and compatibility criteria.
 
