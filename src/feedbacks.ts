@@ -151,7 +151,7 @@ export function GetFeedbackDefinitions(self: ModuleInstance): CompanionFeedbackD
 						{ id: 'scene', label: 'Scene' },
 						{ id: 'meta', label: 'Meta' },
 						{ id: 'media', label: 'Media' },
-						{ id: 'favs', label: 'Favslots' },
+						{ id: 'favs', label: 'Favs' },
 					],
 				},
 			],

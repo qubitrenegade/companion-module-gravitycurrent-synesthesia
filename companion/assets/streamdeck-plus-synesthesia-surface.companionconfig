@@ -1,0 +1,3630 @@
+{
+  "companionBuild": "5.0.4",
+  "connectionCollections": [],
+  "imageLibrary": [],
+  "imageLibraryCollections": [],
+  "instances": {
+    "synesthesia-example-connection": {
+      "label": "Synesthesia",
+      "lastUpgradeIndex": 0,
+      "moduleId": "gravitycurrent-synesthesia",
+      "moduleVersionId": "1.0.0-beta.1",
+      "sortOrder": 0,
+      "updatePolicy": "stable"
+    }
+  },
+  "oldPageNumber": 1,
+  "page": {
+    "gridSize": {
+      "maxColumn": 3,
+      "maxRow": 3,
+      "minColumn": 0,
+      "minRow": 0
+    },
+    "controls": {
+      "0": {
+        "0": {
+          "feedbacks": [
+            {
+              "connectionId": "synesthesia-example-connection",
+              "definitionId": "surface_mode",
+              "id": "syn-v24-mode-feedback-scene",
+              "isInverted": {
+                "isExpression": false,
+                "value": false
+              },
+              "options": {
+                "mode": {
+                  "isExpression": false,
+                  "value": "scene"
+                }
+              },
+              "styleOverrides": [
+                {
+                  "elementId": "box0",
+                  "elementProperty": "borderColor",
+                  "override": {
+                    "isExpression": false,
+                    "value": 16777215
+                  },
+                  "overrideId": "syn-v26-mode-scene-border-color"
+                },
+                {
+                  "elementId": "box0",
+                  "elementProperty": "borderWidth",
+                  "override": {
+                    "isExpression": false,
+                    "value": 4
+                  },
+                  "overrideId": "syn-v26-mode-scene-border-width"
+                }
+              ],
+              "type": "feedback",
+              "upgradeIndex": 0
+            }
+          ],
+          "localVariables": [],
+          "options": {
+            "canModifyStyleInApis": false,
+            "notes": "",
+            "rotaryActions": false,
+            "stepExpression": "",
+            "stepProgression": "auto"
+          },
+          "steps": {
+            "0": {
+              "action_sets": {
+                "down": [
+                  {
+                    "connectionId": "synesthesia-example-connection",
+                    "definitionId": "surface_set_mode",
+                    "id": "syn-v24-mode-scene",
+                    "options": {
+                      "mode": {
+                        "isExpression": false,
+                        "value": "scene"
+                      }
+                    },
+                    "type": "action",
+                    "upgradeIndex": 0
+                  }
+                ],
+                "up": []
+              },
+              "options": {
+                "runWhileHeld": []
+              }
+            }
+          },
+          "style": {
+            "layers": [
+              {
+                "decoration": {
+                  "isExpression": false,
+                  "value": "default"
+                },
+                "id": "canvas",
+                "name": "Canvas",
+                "showStatusIcons": {
+                  "isExpression": false,
+                  "value": "default"
+                },
+                "type": "canvas",
+                "usage": "auto"
+              },
+              {
+                "borderColor": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "borderPosition": {
+                  "isExpression": false,
+                  "value": "inside"
+                },
+                "borderWidth": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "color": {
+                  "isExpression": false,
+                  "value": 1395833
+                },
+                "enabled": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "height": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "id": "box0",
+                "name": "Background",
+                "opacity": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "rotation": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "type": "box",
+                "usage": "auto",
+                "width": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "x": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "y": {
+                  "isExpression": false,
+                  "value": 0
+                }
+              },
+              {
+                "base64Image": {
+                  "isExpression": false,
+                  "value": null
+                },
+                "enabled": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "fillMode": {
+                  "isExpression": false,
+                  "value": "fit"
+                },
+                "halign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "height": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "id": "image0",
+                "name": "Image",
+                "opacity": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "rotation": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "type": "image",
+                "usage": "auto",
+                "valign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "width": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "x": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "y": {
+                  "isExpression": false,
+                  "value": 0
+                }
+              },
+              {
+                "color": {
+                  "isExpression": false,
+                  "value": 16777215
+                },
+                "enabled": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "font": {
+                  "isExpression": false,
+                  "value": "companion-sans"
+                },
+                "fontsize": {
+                  "isExpression": false,
+                  "value": 24
+                },
+                "fontsizeAllowShrink": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "halign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "height": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "id": "text0",
+                "name": "Text",
+                "opacity": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "outlineColor": {
+                  "isExpression": false,
+                  "value": 4278190080
+                },
+                "rotation": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "text": {
+                  "isExpression": false,
+                  "value": "SCENE\nCONTROLS"
+                },
+                "type": "text",
+                "usage": "auto",
+                "valign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "width": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "x": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "y": {
+                  "isExpression": false,
+                  "value": 0
+                }
+              }
+            ]
+          },
+          "type": "button-layered"
+        },
+        "1": {
+          "feedbacks": [
+            {
+              "connectionId": "synesthesia-example-connection",
+              "definitionId": "surface_mode",
+              "id": "syn-v24-mode-feedback-meta",
+              "isInverted": {
+                "isExpression": false,
+                "value": false
+              },
+              "options": {
+                "mode": {
+                  "isExpression": false,
+                  "value": "meta"
+                }
+              },
+              "styleOverrides": [
+                {
+                  "elementId": "box0",
+                  "elementProperty": "borderColor",
+                  "override": {
+                    "isExpression": false,
+                    "value": 16777215
+                  },
+                  "overrideId": "syn-v26-mode-meta-border-color"
+                },
+                {
+                  "elementId": "box0",
+                  "elementProperty": "borderWidth",
+                  "override": {
+                    "isExpression": false,
+                    "value": 4
+                  },
+                  "overrideId": "syn-v26-mode-meta-border-width"
+                }
+              ],
+              "type": "feedback",
+              "upgradeIndex": 0
+            }
+          ],
+          "localVariables": [],
+          "options": {
+            "canModifyStyleInApis": false,
+            "notes": "",
+            "rotaryActions": false,
+            "stepExpression": "",
+            "stepProgression": "auto"
+          },
+          "steps": {
+            "0": {
+              "action_sets": {
+                "down": [
+                  {
+                    "connectionId": "synesthesia-example-connection",
+                    "definitionId": "surface_set_mode",
+                    "id": "syn-v24-mode-meta",
+                    "options": {
+                      "mode": {
+                        "isExpression": false,
+                        "value": "meta"
+                      }
+                    },
+                    "type": "action",
+                    "upgradeIndex": 0
+                  }
+                ],
+                "up": []
+              },
+              "options": {
+                "runWhileHeld": []
+              }
+            }
+          },
+          "style": {
+            "layers": [
+              {
+                "decoration": {
+                  "isExpression": false,
+                  "value": "default"
+                },
+                "id": "canvas",
+                "name": "Canvas",
+                "showStatusIcons": {
+                  "isExpression": false,
+                  "value": "default"
+                },
+                "type": "canvas",
+                "usage": "auto"
+              },
+              {
+                "borderColor": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "borderPosition": {
+                  "isExpression": false,
+                  "value": "inside"
+                },
+                "borderWidth": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "color": {
+                  "isExpression": false,
+                  "value": 1395833
+                },
+                "enabled": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "height": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "id": "box0",
+                "name": "Background",
+                "opacity": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "rotation": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "type": "box",
+                "usage": "auto",
+                "width": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "x": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "y": {
+                  "isExpression": false,
+                  "value": 0
+                }
+              },
+              {
+                "base64Image": {
+                  "isExpression": false,
+                  "value": null
+                },
+                "enabled": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "fillMode": {
+                  "isExpression": false,
+                  "value": "fit"
+                },
+                "halign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "height": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "id": "image0",
+                "name": "Image",
+                "opacity": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "rotation": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "type": "image",
+                "usage": "auto",
+                "valign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "width": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "x": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "y": {
+                  "isExpression": false,
+                  "value": 0
+                }
+              },
+              {
+                "color": {
+                  "isExpression": false,
+                  "value": 16777215
+                },
+                "enabled": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "font": {
+                  "isExpression": false,
+                  "value": "companion-sans"
+                },
+                "fontsize": {
+                  "isExpression": false,
+                  "value": 24
+                },
+                "fontsizeAllowShrink": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "halign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "height": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "id": "text0",
+                "name": "Text",
+                "opacity": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "outlineColor": {
+                  "isExpression": false,
+                  "value": 4278190080
+                },
+                "rotation": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "text": {
+                  "isExpression": false,
+                  "value": "META\nCONTROLS"
+                },
+                "type": "text",
+                "usage": "auto",
+                "valign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "width": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "x": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "y": {
+                  "isExpression": false,
+                  "value": 0
+                }
+              }
+            ]
+          },
+          "type": "button-layered"
+        },
+        "2": {
+          "feedbacks": [
+            {
+              "connectionId": "synesthesia-example-connection",
+              "definitionId": "surface_mode",
+              "id": "syn-v24-mode-feedback-media",
+              "isInverted": {
+                "isExpression": false,
+                "value": false
+              },
+              "options": {
+                "mode": {
+                  "isExpression": false,
+                  "value": "media"
+                }
+              },
+              "styleOverrides": [
+                {
+                  "elementId": "box0",
+                  "elementProperty": "borderColor",
+                  "override": {
+                    "isExpression": false,
+                    "value": 16777215
+                  },
+                  "overrideId": "syn-v26-mode-media-border-color"
+                },
+                {
+                  "elementId": "box0",
+                  "elementProperty": "borderWidth",
+                  "override": {
+                    "isExpression": false,
+                    "value": 4
+                  },
+                  "overrideId": "syn-v26-mode-media-border-width"
+                }
+              ],
+              "type": "feedback",
+              "upgradeIndex": 0
+            }
+          ],
+          "localVariables": [],
+          "options": {
+            "canModifyStyleInApis": false,
+            "notes": "",
+            "rotaryActions": false,
+            "stepExpression": "",
+            "stepProgression": "auto"
+          },
+          "steps": {
+            "0": {
+              "action_sets": {
+                "down": [
+                  {
+                    "connectionId": "synesthesia-example-connection",
+                    "definitionId": "surface_set_mode",
+                    "id": "syn-v24-mode-media",
+                    "options": {
+                      "mode": {
+                        "isExpression": false,
+                        "value": "media"
+                      }
+                    },
+                    "type": "action",
+                    "upgradeIndex": 0
+                  }
+                ],
+                "up": []
+              },
+              "options": {
+                "runWhileHeld": []
+              }
+            }
+          },
+          "style": {
+            "layers": [
+              {
+                "decoration": {
+                  "isExpression": false,
+                  "value": "default"
+                },
+                "id": "canvas",
+                "name": "Canvas",
+                "showStatusIcons": {
+                  "isExpression": false,
+                  "value": "default"
+                },
+                "type": "canvas",
+                "usage": "auto"
+              },
+              {
+                "borderColor": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "borderPosition": {
+                  "isExpression": false,
+                  "value": "inside"
+                },
+                "borderWidth": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "color": {
+                  "isExpression": false,
+                  "value": 1395833
+                },
+                "enabled": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "height": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "id": "box0",
+                "name": "Background",
+                "opacity": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "rotation": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "type": "box",
+                "usage": "auto",
+                "width": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "x": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "y": {
+                  "isExpression": false,
+                  "value": 0
+                }
+              },
+              {
+                "base64Image": {
+                  "isExpression": false,
+                  "value": null
+                },
+                "enabled": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "fillMode": {
+                  "isExpression": false,
+                  "value": "fit"
+                },
+                "halign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "height": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "id": "image0",
+                "name": "Image",
+                "opacity": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "rotation": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "type": "image",
+                "usage": "auto",
+                "valign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "width": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "x": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "y": {
+                  "isExpression": false,
+                  "value": 0
+                }
+              },
+              {
+                "color": {
+                  "isExpression": false,
+                  "value": 16777215
+                },
+                "enabled": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "font": {
+                  "isExpression": false,
+                  "value": "companion-sans"
+                },
+                "fontsize": {
+                  "isExpression": false,
+                  "value": 24
+                },
+                "fontsizeAllowShrink": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "halign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "height": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "id": "text0",
+                "name": "Text",
+                "opacity": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "outlineColor": {
+                  "isExpression": false,
+                  "value": 4278190080
+                },
+                "rotation": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "text": {
+                  "isExpression": true,
+                  "value": "bool($(Synesthesia:surface_media_sources)) ? 'MEDIA\\nSOURCES' : 'MEDIA\\nCONTROLS'"
+                },
+                "type": "text",
+                "usage": "auto",
+                "valign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "width": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "x": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "y": {
+                  "isExpression": false,
+                  "value": 0
+                }
+              }
+            ]
+          },
+          "type": "button-layered"
+        },
+        "3": {
+          "feedbacks": [
+            {
+              "connectionId": "synesthesia-example-connection",
+              "definitionId": "surface_mode",
+              "id": "syn-v24-mode-feedback-favs",
+              "isInverted": {
+                "isExpression": false,
+                "value": false
+              },
+              "options": {
+                "mode": {
+                  "isExpression": false,
+                  "value": "favs"
+                }
+              },
+              "styleOverrides": [
+                {
+                  "elementId": "box0",
+                  "elementProperty": "borderColor",
+                  "override": {
+                    "isExpression": false,
+                    "value": 16777215
+                  },
+                  "overrideId": "syn-v26-mode-favs-border-color"
+                },
+                {
+                  "elementId": "box0",
+                  "elementProperty": "borderWidth",
+                  "override": {
+                    "isExpression": false,
+                    "value": 4
+                  },
+                  "overrideId": "syn-v26-mode-favs-border-width"
+                }
+              ],
+              "type": "feedback",
+              "upgradeIndex": 0
+            }
+          ],
+          "localVariables": [],
+          "options": {
+            "canModifyStyleInApis": false,
+            "notes": "",
+            "rotaryActions": false,
+            "stepExpression": "",
+            "stepProgression": "auto"
+          },
+          "steps": {
+            "0": {
+              "action_sets": {
+                "down": [
+                  {
+                    "connectionId": "synesthesia-example-connection",
+                    "definitionId": "surface_set_mode",
+                    "id": "syn-v24-mode-favs",
+                    "options": {
+                      "mode": {
+                        "isExpression": false,
+                        "value": "favs"
+                      }
+                    },
+                    "type": "action",
+                    "upgradeIndex": 0
+                  }
+                ],
+                "up": []
+              },
+              "options": {
+                "runWhileHeld": []
+              }
+            }
+          },
+          "style": {
+            "layers": [
+              {
+                "decoration": {
+                  "isExpression": false,
+                  "value": "default"
+                },
+                "id": "canvas",
+                "name": "Canvas",
+                "showStatusIcons": {
+                  "isExpression": false,
+                  "value": "default"
+                },
+                "type": "canvas",
+                "usage": "auto"
+              },
+              {
+                "borderColor": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "borderPosition": {
+                  "isExpression": false,
+                  "value": "inside"
+                },
+                "borderWidth": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "color": {
+                  "isExpression": false,
+                  "value": 1395833
+                },
+                "enabled": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "height": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "id": "box0",
+                "name": "Background",
+                "opacity": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "rotation": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "type": "box",
+                "usage": "auto",
+                "width": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "x": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "y": {
+                  "isExpression": false,
+                  "value": 0
+                }
+              },
+              {
+                "base64Image": {
+                  "isExpression": false,
+                  "value": null
+                },
+                "enabled": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "fillMode": {
+                  "isExpression": false,
+                  "value": "fit"
+                },
+                "halign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "height": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "id": "image0",
+                "name": "Image",
+                "opacity": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "rotation": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "type": "image",
+                "usage": "auto",
+                "valign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "width": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "x": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "y": {
+                  "isExpression": false,
+                  "value": 0
+                }
+              },
+              {
+                "color": {
+                  "isExpression": false,
+                  "value": 16777215
+                },
+                "enabled": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "font": {
+                  "isExpression": false,
+                  "value": "companion-sans"
+                },
+                "fontsize": {
+                  "isExpression": false,
+                  "value": 24
+                },
+                "fontsizeAllowShrink": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "halign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "height": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "id": "text0",
+                "name": "Text",
+                "opacity": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "outlineColor": {
+                  "isExpression": false,
+                  "value": 4278190080
+                },
+                "rotation": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "text": {
+                  "isExpression": false,
+                  "value": "FAVS"
+                },
+                "type": "text",
+                "usage": "auto",
+                "valign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "width": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "x": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "y": {
+                  "isExpression": false,
+                  "value": 0
+                }
+              }
+            ]
+          },
+          "type": "button-layered"
+        }
+      },
+      "1": {
+        "0": {
+          "feedbacks": [],
+          "localVariables": [],
+          "options": {
+            "canModifyStyleInApis": false,
+            "notes": "",
+            "rotaryActions": false,
+            "stepExpression": "",
+            "stepProgression": "auto"
+          },
+          "steps": {
+            "0": {
+              "action_sets": {
+                "down": [
+                  {
+                    "connectionId": "synesthesia-example-connection",
+                    "definitionId": "surface_change_page",
+                    "id": "syn-v24-control-page-prev",
+                    "options": {
+                      "direction": {
+                        "isExpression": false,
+                        "value": "previous"
+                      }
+                    },
+                    "type": "action",
+                    "upgradeIndex": 0
+                  }
+                ],
+                "up": []
+              },
+              "options": {
+                "runWhileHeld": []
+              }
+            }
+          },
+          "style": {
+            "layers": [
+              {
+                "decoration": {
+                  "isExpression": false,
+                  "value": "default"
+                },
+                "id": "canvas",
+                "name": "Canvas",
+                "showStatusIcons": {
+                  "isExpression": false,
+                  "value": "default"
+                },
+                "type": "canvas",
+                "usage": "auto"
+              },
+              {
+                "borderColor": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "borderPosition": {
+                  "isExpression": false,
+                  "value": "inside"
+                },
+                "borderWidth": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "color": {
+                  "isExpression": false,
+                  "value": 1395833
+                },
+                "enabled": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "height": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "id": "box0",
+                "name": "Background",
+                "opacity": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "rotation": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "type": "box",
+                "usage": "auto",
+                "width": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "x": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "y": {
+                  "isExpression": false,
+                  "value": 0
+                }
+              },
+              {
+                "base64Image": {
+                  "isExpression": false,
+                  "value": null
+                },
+                "enabled": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "fillMode": {
+                  "isExpression": false,
+                  "value": "fit"
+                },
+                "halign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "height": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "id": "image0",
+                "name": "Image",
+                "opacity": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "rotation": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "type": "image",
+                "usage": "auto",
+                "valign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "width": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "x": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "y": {
+                  "isExpression": false,
+                  "value": 0
+                }
+              },
+              {
+                "color": {
+                  "isExpression": false,
+                  "value": 16777215
+                },
+                "enabled": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "font": {
+                  "isExpression": false,
+                  "value": "companion-sans"
+                },
+                "fontsize": {
+                  "isExpression": false,
+                  "value": 24
+                },
+                "fontsizeAllowShrink": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "halign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "height": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "id": "text0",
+                "name": "Text",
+                "opacity": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "outlineColor": {
+                  "isExpression": false,
+                  "value": 4278190080
+                },
+                "rotation": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "text": {
+                  "isExpression": false,
+                  "value": "CONTROLS\nPREVIOUS"
+                },
+                "type": "text",
+                "usage": "auto",
+                "valign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "width": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "x": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "y": {
+                  "isExpression": false,
+                  "value": 0
+                }
+              }
+            ]
+          },
+          "type": "button-layered"
+        },
+        "1": {
+          "feedbacks": [],
+          "localVariables": [],
+          "options": {
+            "canModifyStyleInApis": false,
+            "notes": "",
+            "rotaryActions": false,
+            "stepExpression": "",
+            "stepProgression": "auto"
+          },
+          "steps": {
+            "0": {
+              "action_sets": {
+                "down": [
+                  {
+                    "connectionId": "synesthesia-example-connection",
+                    "definitionId": "surface_change_page",
+                    "id": "syn-v24-control-page-next",
+                    "options": {
+                      "direction": {
+                        "isExpression": false,
+                        "value": "next"
+                      }
+                    },
+                    "type": "action",
+                    "upgradeIndex": 0
+                  }
+                ],
+                "up": []
+              },
+              "options": {
+                "runWhileHeld": []
+              }
+            }
+          },
+          "style": {
+            "layers": [
+              {
+                "decoration": {
+                  "isExpression": false,
+                  "value": "default"
+                },
+                "id": "canvas",
+                "name": "Canvas",
+                "showStatusIcons": {
+                  "isExpression": false,
+                  "value": "default"
+                },
+                "type": "canvas",
+                "usage": "auto"
+              },
+              {
+                "borderColor": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "borderPosition": {
+                  "isExpression": false,
+                  "value": "inside"
+                },
+                "borderWidth": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "color": {
+                  "isExpression": false,
+                  "value": 1395833
+                },
+                "enabled": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "height": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "id": "box0",
+                "name": "Background",
+                "opacity": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "rotation": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "type": "box",
+                "usage": "auto",
+                "width": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "x": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "y": {
+                  "isExpression": false,
+                  "value": 0
+                }
+              },
+              {
+                "base64Image": {
+                  "isExpression": false,
+                  "value": null
+                },
+                "enabled": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "fillMode": {
+                  "isExpression": false,
+                  "value": "fit"
+                },
+                "halign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "height": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "id": "image0",
+                "name": "Image",
+                "opacity": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "rotation": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "type": "image",
+                "usage": "auto",
+                "valign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "width": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "x": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "y": {
+                  "isExpression": false,
+                  "value": 0
+                }
+              },
+              {
+                "color": {
+                  "isExpression": false,
+                  "value": 16777215
+                },
+                "enabled": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "font": {
+                  "isExpression": false,
+                  "value": "companion-sans"
+                },
+                "fontsize": {
+                  "isExpression": false,
+                  "value": 24
+                },
+                "fontsizeAllowShrink": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "halign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "height": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "id": "text0",
+                "name": "Text",
+                "opacity": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "outlineColor": {
+                  "isExpression": false,
+                  "value": 4278190080
+                },
+                "rotation": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "text": {
+                  "isExpression": false,
+                  "value": "CONTROLS\nNEXT"
+                },
+                "type": "text",
+                "usage": "auto",
+                "valign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "width": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "x": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "y": {
+                  "isExpression": false,
+                  "value": 0
+                }
+              }
+            ]
+          },
+          "type": "button-layered"
+        },
+        "2": {
+          "feedbacks": [],
+          "localVariables": [],
+          "options": {
+            "canModifyStyleInApis": false,
+            "notes": "",
+            "rotaryActions": false,
+            "stepExpression": "",
+            "stepProgression": "auto"
+          },
+          "steps": {
+            "0": {
+              "action_sets": {
+                "down": [
+                  {
+                    "connectionId": "synesthesia-example-connection",
+                    "definitionId": "surface_all_bank_operation",
+                    "id": "syn-v24-global-default",
+                    "options": {
+                      "operation": {
+                        "isExpression": false,
+                        "value": "default"
+                      }
+                    },
+                    "type": "action",
+                    "upgradeIndex": 0
+                  }
+                ],
+                "up": []
+              },
+              "options": {
+                "runWhileHeld": []
+              }
+            }
+          },
+          "style": {
+            "layers": [
+              {
+                "decoration": {
+                  "isExpression": false,
+                  "value": "default"
+                },
+                "id": "canvas",
+                "name": "Canvas",
+                "showStatusIcons": {
+                  "isExpression": false,
+                  "value": "default"
+                },
+                "type": "canvas",
+                "usage": "auto"
+              },
+              {
+                "borderColor": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "borderPosition": {
+                  "isExpression": false,
+                  "value": "inside"
+                },
+                "borderWidth": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "color": {
+                  "isExpression": false,
+                  "value": 5972864
+                },
+                "enabled": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "height": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "id": "box0",
+                "name": "Background",
+                "opacity": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "rotation": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "type": "box",
+                "usage": "auto",
+                "width": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "x": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "y": {
+                  "isExpression": false,
+                  "value": 0
+                }
+              },
+              {
+                "base64Image": {
+                  "isExpression": false,
+                  "value": null
+                },
+                "enabled": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "fillMode": {
+                  "isExpression": false,
+                  "value": "fit"
+                },
+                "halign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "height": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "id": "image0",
+                "name": "Image",
+                "opacity": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "rotation": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "type": "image",
+                "usage": "auto",
+                "valign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "width": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "x": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "y": {
+                  "isExpression": false,
+                  "value": 0
+                }
+              },
+              {
+                "color": {
+                  "isExpression": false,
+                  "value": 16777215
+                },
+                "enabled": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "font": {
+                  "isExpression": false,
+                  "value": "companion-sans"
+                },
+                "fontsize": {
+                  "isExpression": false,
+                  "value": 24
+                },
+                "fontsizeAllowShrink": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "halign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "height": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "id": "text0",
+                "name": "Text",
+                "opacity": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "outlineColor": {
+                  "isExpression": false,
+                  "value": 4278190080
+                },
+                "rotation": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "text": {
+                  "isExpression": false,
+                  "value": "GLOBAL\nDEFAULT"
+                },
+                "type": "text",
+                "usage": "auto",
+                "valign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "width": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "x": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "y": {
+                  "isExpression": false,
+                  "value": 0
+                }
+              }
+            ]
+          },
+          "type": "button-layered"
+        },
+        "3": {
+          "feedbacks": [],
+          "localVariables": [],
+          "options": {
+            "canModifyStyleInApis": false,
+            "notes": "",
+            "rotaryActions": false,
+            "stepExpression": "",
+            "stepProgression": "auto"
+          },
+          "steps": {
+            "0": {
+              "action_sets": {
+                "down": [
+                  {
+                    "connectionId": "synesthesia-example-connection",
+                    "definitionId": "surface_all_bank_operation",
+                    "id": "syn-v24-global-undo",
+                    "options": {
+                      "operation": {
+                        "isExpression": false,
+                        "value": "undo"
+                      }
+                    },
+                    "type": "action",
+                    "upgradeIndex": 0
+                  }
+                ],
+                "up": []
+              },
+              "options": {
+                "runWhileHeld": []
+              }
+            }
+          },
+          "style": {
+            "layers": [
+              {
+                "decoration": {
+                  "isExpression": false,
+                  "value": "default"
+                },
+                "id": "canvas",
+                "name": "Canvas",
+                "showStatusIcons": {
+                  "isExpression": false,
+                  "value": "default"
+                },
+                "type": "canvas",
+                "usage": "auto"
+              },
+              {
+                "borderColor": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "borderPosition": {
+                  "isExpression": false,
+                  "value": "inside"
+                },
+                "borderWidth": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "color": {
+                  "isExpression": false,
+                  "value": 5972864
+                },
+                "enabled": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "height": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "id": "box0",
+                "name": "Background",
+                "opacity": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "rotation": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "type": "box",
+                "usage": "auto",
+                "width": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "x": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "y": {
+                  "isExpression": false,
+                  "value": 0
+                }
+              },
+              {
+                "base64Image": {
+                  "isExpression": false,
+                  "value": null
+                },
+                "enabled": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "fillMode": {
+                  "isExpression": false,
+                  "value": "fit"
+                },
+                "halign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "height": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "id": "image0",
+                "name": "Image",
+                "opacity": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "rotation": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "type": "image",
+                "usage": "auto",
+                "valign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "width": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "x": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "y": {
+                  "isExpression": false,
+                  "value": 0
+                }
+              },
+              {
+                "color": {
+                  "isExpression": false,
+                  "value": 16777215
+                },
+                "enabled": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "font": {
+                  "isExpression": false,
+                  "value": "companion-sans"
+                },
+                "fontsize": {
+                  "isExpression": false,
+                  "value": 24
+                },
+                "fontsizeAllowShrink": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "halign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "height": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "id": "text0",
+                "name": "Text",
+                "opacity": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "outlineColor": {
+                  "isExpression": false,
+                  "value": 4278190080
+                },
+                "rotation": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "text": {
+                  "isExpression": false,
+                  "value": "GLOBAL\nUNDO"
+                },
+                "type": "text",
+                "usage": "auto",
+                "valign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "width": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "x": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "y": {
+                  "isExpression": false,
+                  "value": 0
+                }
+              }
+            ]
+          },
+          "type": "button-layered"
+        }
+      },
+      "2": {
+        "0": {
+          "feedbacks": [
+            {
+              "connectionId": "synesthesia-example-connection",
+              "definitionId": "surface_rotary_locked",
+              "id": "syn-v24-lcd-lock-1",
+              "isInverted": {
+                "isExpression": false,
+                "value": false
+              },
+              "options": {
+                "slot": {
+                  "isExpression": false,
+                  "value": "1"
+                }
+              },
+              "styleOverrides": [
+                {
+                  "elementId": "box0",
+                  "elementProperty": "borderColor",
+                  "override": {
+                    "isExpression": false,
+                    "value": 13369344
+                  },
+                  "overrideId": "syn-v24-lcd-lock-1-border-color"
+                },
+                {
+                  "elementId": "box0",
+                  "elementProperty": "borderWidth",
+                  "override": {
+                    "isExpression": false,
+                    "value": 4
+                  },
+                  "overrideId": "syn-v24-lcd-lock-1-border-width"
+                }
+              ],
+              "type": "feedback",
+              "upgradeIndex": 0
+            }
+          ],
+          "localVariables": [],
+          "options": {
+            "canModifyStyleInApis": false,
+            "notes": "Displays the feedback name and normalized value for global slider 1.",
+            "rotaryActions": false,
+            "stepExpression": "",
+            "stepProgression": "auto"
+          },
+          "steps": {
+            "0": {
+              "action_sets": {
+                "down": [
+                  {
+                    "connectionId": "synesthesia-example-connection",
+                    "definitionId": "surface_touch_rotary",
+                    "id": "syn-v24-lcd-touch-1",
+                    "options": {
+                      "slot": {
+                        "isExpression": false,
+                        "value": "1"
+                      }
+                    },
+                    "type": "action",
+                    "upgradeIndex": 0
+                  }
+                ],
+                "up": []
+              },
+              "options": {
+                "runWhileHeld": []
+              }
+            }
+          },
+          "style": {
+            "layers": [
+              {
+                "decoration": {
+                  "isExpression": false,
+                  "value": "default"
+                },
+                "id": "canvas",
+                "name": "Canvas",
+                "showStatusIcons": {
+                  "isExpression": false,
+                  "value": "default"
+                },
+                "type": "canvas",
+                "usage": "auto"
+              },
+              {
+                "borderColor": {
+                  "isExpression": false,
+                  "value": 2282478
+                },
+                "borderPosition": {
+                  "isExpression": false,
+                  "value": "inside"
+                },
+                "borderWidth": {
+                  "isExpression": false,
+                  "value": 4
+                },
+                "color": {
+                  "isExpression": true,
+                  "value": "bool($(Synesthesia:surface_rotary_1_active)) ? 527378 : 0"
+                },
+                "enabled": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "height": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "id": "box0",
+                "name": "Background",
+                "opacity": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "rotation": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "type": "box",
+                "usage": "auto",
+                "width": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "x": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "y": {
+                  "isExpression": false,
+                  "value": 0
+                }
+              },
+              {
+                "color": {
+                  "isExpression": false,
+                  "value": 16777215
+                },
+                "enabled": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "font": {
+                  "isExpression": false,
+                  "value": "companion-sans"
+                },
+                "fontsize": {
+                  "isExpression": false,
+                  "value": 42
+                },
+                "fontsizeAllowShrink": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "halign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "height": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "id": "text0",
+                "name": "Active Column",
+                "opacity": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "outlineColor": {
+                  "isExpression": false,
+                  "value": 4278190080
+                },
+                "rotation": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "text": {
+                  "isExpression": false,
+                  "value": "$(Synesthesia:surface_rotary_1_label)\n$(Synesthesia:surface_rotary_1_component) $(Synesthesia:surface_rotary_1_value)"
+                },
+                "type": "text",
+                "usage": "auto",
+                "valign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "width": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "x": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "y": {
+                  "isExpression": false,
+                  "value": 0
+                }
+              }
+            ]
+          },
+          "type": "button-layered"
+        },
+        "1": {
+          "feedbacks": [
+            {
+              "connectionId": "synesthesia-example-connection",
+              "definitionId": "surface_rotary_locked",
+              "id": "syn-v24-lcd-lock-2",
+              "isInverted": {
+                "isExpression": false,
+                "value": false
+              },
+              "options": {
+                "slot": {
+                  "isExpression": false,
+                  "value": "2"
+                }
+              },
+              "styleOverrides": [
+                {
+                  "elementId": "box0",
+                  "elementProperty": "borderColor",
+                  "override": {
+                    "isExpression": false,
+                    "value": 13369344
+                  },
+                  "overrideId": "syn-v24-lcd-lock-2-border-color"
+                },
+                {
+                  "elementId": "box0",
+                  "elementProperty": "borderWidth",
+                  "override": {
+                    "isExpression": false,
+                    "value": 4
+                  },
+                  "overrideId": "syn-v24-lcd-lock-2-border-width"
+                }
+              ],
+              "type": "feedback",
+              "upgradeIndex": 0
+            }
+          ],
+          "localVariables": [],
+          "options": {
+            "canModifyStyleInApis": false,
+            "notes": "Displays the feedback name and normalized value for global slider 2.",
+            "rotaryActions": false,
+            "stepExpression": "",
+            "stepProgression": "auto"
+          },
+          "steps": {
+            "0": {
+              "action_sets": {
+                "down": [
+                  {
+                    "connectionId": "synesthesia-example-connection",
+                    "definitionId": "surface_touch_rotary",
+                    "id": "syn-v24-lcd-touch-2",
+                    "options": {
+                      "slot": {
+                        "isExpression": false,
+                        "value": "2"
+                      }
+                    },
+                    "type": "action",
+                    "upgradeIndex": 0
+                  }
+                ],
+                "up": []
+              },
+              "options": {
+                "runWhileHeld": []
+              }
+            }
+          },
+          "style": {
+            "layers": [
+              {
+                "decoration": {
+                  "isExpression": false,
+                  "value": "default"
+                },
+                "id": "canvas",
+                "name": "Canvas",
+                "showStatusIcons": {
+                  "isExpression": false,
+                  "value": "default"
+                },
+                "type": "canvas",
+                "usage": "auto"
+              },
+              {
+                "borderColor": {
+                  "isExpression": false,
+                  "value": 2282478
+                },
+                "borderPosition": {
+                  "isExpression": false,
+                  "value": "inside"
+                },
+                "borderWidth": {
+                  "isExpression": false,
+                  "value": 4
+                },
+                "color": {
+                  "isExpression": true,
+                  "value": "bool($(Synesthesia:surface_rotary_2_active)) ? 527378 : 0"
+                },
+                "enabled": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "height": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "id": "box0",
+                "name": "Background",
+                "opacity": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "rotation": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "type": "box",
+                "usage": "auto",
+                "width": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "x": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "y": {
+                  "isExpression": false,
+                  "value": 0
+                }
+              },
+              {
+                "color": {
+                  "isExpression": false,
+                  "value": 16777215
+                },
+                "enabled": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "font": {
+                  "isExpression": false,
+                  "value": "companion-sans"
+                },
+                "fontsize": {
+                  "isExpression": false,
+                  "value": 42
+                },
+                "fontsizeAllowShrink": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "halign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "height": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "id": "text0",
+                "name": "Active Column",
+                "opacity": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "outlineColor": {
+                  "isExpression": false,
+                  "value": 4278190080
+                },
+                "rotation": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "text": {
+                  "isExpression": false,
+                  "value": "$(Synesthesia:surface_rotary_2_label)\n$(Synesthesia:surface_rotary_2_component) $(Synesthesia:surface_rotary_2_value)"
+                },
+                "type": "text",
+                "usage": "auto",
+                "valign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "width": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "x": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "y": {
+                  "isExpression": false,
+                  "value": 0
+                }
+              }
+            ]
+          },
+          "type": "button-layered"
+        },
+        "2": {
+          "feedbacks": [
+            {
+              "connectionId": "synesthesia-example-connection",
+              "definitionId": "surface_rotary_locked",
+              "id": "syn-v24-lcd-lock-3",
+              "isInverted": {
+                "isExpression": false,
+                "value": false
+              },
+              "options": {
+                "slot": {
+                  "isExpression": false,
+                  "value": "3"
+                }
+              },
+              "styleOverrides": [
+                {
+                  "elementId": "box0",
+                  "elementProperty": "borderColor",
+                  "override": {
+                    "isExpression": false,
+                    "value": 13369344
+                  },
+                  "overrideId": "syn-v24-lcd-lock-3-border-color"
+                },
+                {
+                  "elementId": "box0",
+                  "elementProperty": "borderWidth",
+                  "override": {
+                    "isExpression": false,
+                    "value": 4
+                  },
+                  "overrideId": "syn-v24-lcd-lock-3-border-width"
+                }
+              ],
+              "type": "feedback",
+              "upgradeIndex": 0
+            }
+          ],
+          "localVariables": [],
+          "options": {
+            "canModifyStyleInApis": false,
+            "notes": "Displays the feedback name and normalized value for global slider 3.",
+            "rotaryActions": false,
+            "stepExpression": "",
+            "stepProgression": "auto"
+          },
+          "steps": {
+            "0": {
+              "action_sets": {
+                "down": [
+                  {
+                    "connectionId": "synesthesia-example-connection",
+                    "definitionId": "surface_touch_rotary",
+                    "id": "syn-v24-lcd-touch-3",
+                    "options": {
+                      "slot": {
+                        "isExpression": false,
+                        "value": "3"
+                      }
+                    },
+                    "type": "action",
+                    "upgradeIndex": 0
+                  }
+                ],
+                "up": []
+              },
+              "options": {
+                "runWhileHeld": []
+              }
+            }
+          },
+          "style": {
+            "layers": [
+              {
+                "decoration": {
+                  "isExpression": false,
+                  "value": "default"
+                },
+                "id": "canvas",
+                "name": "Canvas",
+                "showStatusIcons": {
+                  "isExpression": false,
+                  "value": "default"
+                },
+                "type": "canvas",
+                "usage": "auto"
+              },
+              {
+                "borderColor": {
+                  "isExpression": false,
+                  "value": 2282478
+                },
+                "borderPosition": {
+                  "isExpression": false,
+                  "value": "inside"
+                },
+                "borderWidth": {
+                  "isExpression": false,
+                  "value": 4
+                },
+                "color": {
+                  "isExpression": true,
+                  "value": "bool($(Synesthesia:surface_rotary_3_active)) ? 527378 : 0"
+                },
+                "enabled": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "height": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "id": "box0",
+                "name": "Background",
+                "opacity": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "rotation": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "type": "box",
+                "usage": "auto",
+                "width": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "x": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "y": {
+                  "isExpression": false,
+                  "value": 0
+                }
+              },
+              {
+                "color": {
+                  "isExpression": false,
+                  "value": 16777215
+                },
+                "enabled": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "font": {
+                  "isExpression": false,
+                  "value": "companion-sans"
+                },
+                "fontsize": {
+                  "isExpression": false,
+                  "value": 42
+                },
+                "fontsizeAllowShrink": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "halign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "height": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "id": "text0",
+                "name": "Active Column",
+                "opacity": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "outlineColor": {
+                  "isExpression": false,
+                  "value": 4278190080
+                },
+                "rotation": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "text": {
+                  "isExpression": false,
+                  "value": "$(Synesthesia:surface_rotary_3_label)\n$(Synesthesia:surface_rotary_3_component) $(Synesthesia:surface_rotary_3_value)"
+                },
+                "type": "text",
+                "usage": "auto",
+                "valign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "width": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "x": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "y": {
+                  "isExpression": false,
+                  "value": 0
+                }
+              }
+            ]
+          },
+          "type": "button-layered"
+        },
+        "3": {
+          "feedbacks": [
+            {
+              "connectionId": "synesthesia-example-connection",
+              "definitionId": "surface_rotary_locked",
+              "id": "syn-v24-lcd-lock-4",
+              "isInverted": {
+                "isExpression": false,
+                "value": false
+              },
+              "options": {
+                "slot": {
+                  "isExpression": false,
+                  "value": "4"
+                }
+              },
+              "styleOverrides": [
+                {
+                  "elementId": "box0",
+                  "elementProperty": "borderColor",
+                  "override": {
+                    "isExpression": false,
+                    "value": 13369344
+                  },
+                  "overrideId": "syn-v24-lcd-lock-4-border-color"
+                },
+                {
+                  "elementId": "box0",
+                  "elementProperty": "borderWidth",
+                  "override": {
+                    "isExpression": false,
+                    "value": 4
+                  },
+                  "overrideId": "syn-v24-lcd-lock-4-border-width"
+                }
+              ],
+              "type": "feedback",
+              "upgradeIndex": 0
+            }
+          ],
+          "localVariables": [],
+          "options": {
+            "canModifyStyleInApis": false,
+            "notes": "Displays the feedback name and normalized value for global knob 1.",
+            "rotaryActions": false,
+            "stepExpression": "",
+            "stepProgression": "auto"
+          },
+          "steps": {
+            "0": {
+              "action_sets": {
+                "down": [
+                  {
+                    "connectionId": "synesthesia-example-connection",
+                    "definitionId": "surface_touch_rotary",
+                    "id": "syn-v24-lcd-touch-4",
+                    "options": {
+                      "slot": {
+                        "isExpression": false,
+                        "value": "4"
+                      }
+                    },
+                    "type": "action",
+                    "upgradeIndex": 0
+                  }
+                ],
+                "up": []
+              },
+              "options": {
+                "runWhileHeld": []
+              }
+            }
+          },
+          "style": {
+            "layers": [
+              {
+                "decoration": {
+                  "isExpression": false,
+                  "value": "default"
+                },
+                "id": "canvas",
+                "name": "Canvas",
+                "showStatusIcons": {
+                  "isExpression": false,
+                  "value": "default"
+                },
+                "type": "canvas",
+                "usage": "auto"
+              },
+              {
+                "borderColor": {
+                  "isExpression": false,
+                  "value": 2282478
+                },
+                "borderPosition": {
+                  "isExpression": false,
+                  "value": "inside"
+                },
+                "borderWidth": {
+                  "isExpression": false,
+                  "value": 4
+                },
+                "color": {
+                  "isExpression": true,
+                  "value": "bool($(Synesthesia:surface_rotary_4_active)) ? 527378 : 0"
+                },
+                "enabled": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "height": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "id": "box0",
+                "name": "Background",
+                "opacity": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "rotation": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "type": "box",
+                "usage": "auto",
+                "width": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "x": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "y": {
+                  "isExpression": false,
+                  "value": 0
+                }
+              },
+              {
+                "color": {
+                  "isExpression": false,
+                  "value": 16777215
+                },
+                "enabled": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "font": {
+                  "isExpression": false,
+                  "value": "companion-sans"
+                },
+                "fontsize": {
+                  "isExpression": false,
+                  "value": 42
+                },
+                "fontsizeAllowShrink": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "halign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "height": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "id": "text0",
+                "name": "Active Column",
+                "opacity": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "outlineColor": {
+                  "isExpression": false,
+                  "value": 4278190080
+                },
+                "rotation": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "text": {
+                  "isExpression": false,
+                  "value": "$(Synesthesia:surface_rotary_4_label)\n$(Synesthesia:surface_rotary_4_component) $(Synesthesia:surface_rotary_4_value)"
+                },
+                "type": "text",
+                "usage": "auto",
+                "valign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "width": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "x": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "y": {
+                  "isExpression": false,
+                  "value": 0
+                }
+              }
+            ]
+          },
+          "type": "button-layered"
+        }
+      },
+      "3": {
+        "0": {
+          "feedbacks": [],
+          "localVariables": [],
+          "options": {
+            "canModifyStyleInApis": false,
+            "notes": "Rotate to adjust global slider 1. Push to restore its default value.",
+            "rotaryActions": true,
+            "stepExpression": "",
+            "stepProgression": "auto"
+          },
+          "steps": {
+            "0": {
+              "action_sets": {
+                "down": [
+                  {
+                    "connectionId": "synesthesia-example-connection",
+                    "definitionId": "surface_reset_rotary",
+                    "id": "syn-v24-encoder-reset-1",
+                    "options": {
+                      "slot": {
+                        "isExpression": false,
+                        "value": "1"
+                      }
+                    },
+                    "type": "action",
+                    "upgradeIndex": 0
+                  }
+                ],
+                "rotate_left": [
+                  {
+                    "connectionId": "synesthesia-example-connection",
+                    "definitionId": "surface_adjust_rotary",
+                    "id": "syn-v24-encoder-left-1",
+                    "options": {
+                      "delta": {
+                        "isExpression": false,
+                        "value": "-0.05"
+                      },
+                      "slot": {
+                        "isExpression": false,
+                        "value": "1"
+                      }
+                    },
+                    "type": "action",
+                    "upgradeIndex": 0
+                  }
+                ],
+                "rotate_right": [
+                  {
+                    "connectionId": "synesthesia-example-connection",
+                    "definitionId": "surface_adjust_rotary",
+                    "id": "syn-v24-encoder-right-1",
+                    "options": {
+                      "delta": {
+                        "isExpression": false,
+                        "value": "0.05"
+                      },
+                      "slot": {
+                        "isExpression": false,
+                        "value": "1"
+                      }
+                    },
+                    "type": "action",
+                    "upgradeIndex": 0
+                  }
+                ],
+                "up": []
+              },
+              "options": {
+                "runWhileHeld": []
+              }
+            }
+          },
+          "style": {
+            "layers": [
+              {
+                "decoration": {
+                  "isExpression": false,
+                  "value": "default"
+                },
+                "id": "canvas",
+                "name": "Canvas",
+                "showStatusIcons": {
+                  "isExpression": false,
+                  "value": "default"
+                },
+                "type": "canvas",
+                "usage": "auto"
+              },
+              {
+                "borderColor": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "borderPosition": {
+                  "isExpression": false,
+                  "value": "inside"
+                },
+                "borderWidth": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "color": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "enabled": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "height": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "id": "box0",
+                "name": "Background",
+                "opacity": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "rotation": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "type": "box",
+                "usage": "auto",
+                "width": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "x": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "y": {
+                  "isExpression": false,
+                  "value": 0
+                }
+              },
+              {
+                "color": {
+                  "isExpression": false,
+                  "value": 16777215
+                },
+                "enabled": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "font": {
+                  "isExpression": false,
+                  "value": "companion-sans"
+                },
+                "fontsize": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "fontsizeAllowShrink": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "halign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "height": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "id": "text0",
+                "name": "Text",
+                "opacity": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "outlineColor": {
+                  "isExpression": false,
+                  "value": 4278190080
+                },
+                "rotation": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "text": {
+                  "isExpression": false,
+                  "value": ""
+                },
+                "type": "text",
+                "usage": "auto",
+                "valign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "width": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "x": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "y": {
+                  "isExpression": false,
+                  "value": 0
+                }
+              }
+            ]
+          },
+          "type": "button-layered"
+        },
+        "1": {
+          "feedbacks": [],
+          "localVariables": [],
+          "options": {
+            "canModifyStyleInApis": false,
+            "notes": "Rotate to adjust global slider 2. Push to restore its default value.",
+            "rotaryActions": true,
+            "stepExpression": "",
+            "stepProgression": "auto"
+          },
+          "steps": {
+            "0": {
+              "action_sets": {
+                "down": [
+                  {
+                    "connectionId": "synesthesia-example-connection",
+                    "definitionId": "surface_reset_rotary",
+                    "id": "syn-v24-encoder-reset-2",
+                    "options": {
+                      "slot": {
+                        "isExpression": false,
+                        "value": "2"
+                      }
+                    },
+                    "type": "action",
+                    "upgradeIndex": 0
+                  }
+                ],
+                "rotate_left": [
+                  {
+                    "connectionId": "synesthesia-example-connection",
+                    "definitionId": "surface_adjust_rotary",
+                    "id": "syn-v24-encoder-left-2",
+                    "options": {
+                      "delta": {
+                        "isExpression": false,
+                        "value": "-0.05"
+                      },
+                      "slot": {
+                        "isExpression": false,
+                        "value": "2"
+                      }
+                    },
+                    "type": "action",
+                    "upgradeIndex": 0
+                  }
+                ],
+                "rotate_right": [
+                  {
+                    "connectionId": "synesthesia-example-connection",
+                    "definitionId": "surface_adjust_rotary",
+                    "id": "syn-v24-encoder-right-2",
+                    "options": {
+                      "delta": {
+                        "isExpression": false,
+                        "value": "0.05"
+                      },
+                      "slot": {
+                        "isExpression": false,
+                        "value": "2"
+                      }
+                    },
+                    "type": "action",
+                    "upgradeIndex": 0
+                  }
+                ],
+                "up": []
+              },
+              "options": {
+                "runWhileHeld": []
+              }
+            }
+          },
+          "style": {
+            "layers": [
+              {
+                "decoration": {
+                  "isExpression": false,
+                  "value": "default"
+                },
+                "id": "canvas",
+                "name": "Canvas",
+                "showStatusIcons": {
+                  "isExpression": false,
+                  "value": "default"
+                },
+                "type": "canvas",
+                "usage": "auto"
+              },
+              {
+                "borderColor": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "borderPosition": {
+                  "isExpression": false,
+                  "value": "inside"
+                },
+                "borderWidth": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "color": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "enabled": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "height": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "id": "box0",
+                "name": "Background",
+                "opacity": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "rotation": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "type": "box",
+                "usage": "auto",
+                "width": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "x": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "y": {
+                  "isExpression": false,
+                  "value": 0
+                }
+              },
+              {
+                "color": {
+                  "isExpression": false,
+                  "value": 16777215
+                },
+                "enabled": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "font": {
+                  "isExpression": false,
+                  "value": "companion-sans"
+                },
+                "fontsize": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "fontsizeAllowShrink": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "halign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "height": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "id": "text0",
+                "name": "Text",
+                "opacity": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "outlineColor": {
+                  "isExpression": false,
+                  "value": 4278190080
+                },
+                "rotation": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "text": {
+                  "isExpression": false,
+                  "value": ""
+                },
+                "type": "text",
+                "usage": "auto",
+                "valign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "width": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "x": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "y": {
+                  "isExpression": false,
+                  "value": 0
+                }
+              }
+            ]
+          },
+          "type": "button-layered"
+        },
+        "2": {
+          "feedbacks": [],
+          "localVariables": [],
+          "options": {
+            "canModifyStyleInApis": false,
+            "notes": "Rotate to adjust global slider 3. Push to restore its default value.",
+            "rotaryActions": true,
+            "stepExpression": "",
+            "stepProgression": "auto"
+          },
+          "steps": {
+            "0": {
+              "action_sets": {
+                "down": [
+                  {
+                    "connectionId": "synesthesia-example-connection",
+                    "definitionId": "surface_reset_rotary",
+                    "id": "syn-v24-encoder-reset-3",
+                    "options": {
+                      "slot": {
+                        "isExpression": false,
+                        "value": "3"
+                      }
+                    },
+                    "type": "action",
+                    "upgradeIndex": 0
+                  }
+                ],
+                "rotate_left": [
+                  {
+                    "connectionId": "synesthesia-example-connection",
+                    "definitionId": "surface_adjust_rotary",
+                    "id": "syn-v24-encoder-left-3",
+                    "options": {
+                      "delta": {
+                        "isExpression": false,
+                        "value": "-0.05"
+                      },
+                      "slot": {
+                        "isExpression": false,
+                        "value": "3"
+                      }
+                    },
+                    "type": "action",
+                    "upgradeIndex": 0
+                  }
+                ],
+                "rotate_right": [
+                  {
+                    "connectionId": "synesthesia-example-connection",
+                    "definitionId": "surface_adjust_rotary",
+                    "id": "syn-v24-encoder-right-3",
+                    "options": {
+                      "delta": {
+                        "isExpression": false,
+                        "value": "0.05"
+                      },
+                      "slot": {
+                        "isExpression": false,
+                        "value": "3"
+                      }
+                    },
+                    "type": "action",
+                    "upgradeIndex": 0
+                  }
+                ],
+                "up": []
+              },
+              "options": {
+                "runWhileHeld": []
+              }
+            }
+          },
+          "style": {
+            "layers": [
+              {
+                "decoration": {
+                  "isExpression": false,
+                  "value": "default"
+                },
+                "id": "canvas",
+                "name": "Canvas",
+                "showStatusIcons": {
+                  "isExpression": false,
+                  "value": "default"
+                },
+                "type": "canvas",
+                "usage": "auto"
+              },
+              {
+                "borderColor": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "borderPosition": {
+                  "isExpression": false,
+                  "value": "inside"
+                },
+                "borderWidth": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "color": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "enabled": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "height": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "id": "box0",
+                "name": "Background",
+                "opacity": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "rotation": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "type": "box",
+                "usage": "auto",
+                "width": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "x": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "y": {
+                  "isExpression": false,
+                  "value": 0
+                }
+              },
+              {
+                "color": {
+                  "isExpression": false,
+                  "value": 16777215
+                },
+                "enabled": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "font": {
+                  "isExpression": false,
+                  "value": "companion-sans"
+                },
+                "fontsize": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "fontsizeAllowShrink": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "halign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "height": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "id": "text0",
+                "name": "Text",
+                "opacity": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "outlineColor": {
+                  "isExpression": false,
+                  "value": 4278190080
+                },
+                "rotation": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "text": {
+                  "isExpression": false,
+                  "value": ""
+                },
+                "type": "text",
+                "usage": "auto",
+                "valign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "width": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "x": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "y": {
+                  "isExpression": false,
+                  "value": 0
+                }
+              }
+            ]
+          },
+          "type": "button-layered"
+        },
+        "3": {
+          "feedbacks": [],
+          "localVariables": [],
+          "options": {
+            "canModifyStyleInApis": false,
+            "notes": "Rotate to adjust global knob 1. Push to restore its default value.",
+            "rotaryActions": true,
+            "stepExpression": "",
+            "stepProgression": "auto"
+          },
+          "steps": {
+            "0": {
+              "action_sets": {
+                "down": [
+                  {
+                    "connectionId": "synesthesia-example-connection",
+                    "definitionId": "surface_reset_rotary",
+                    "id": "syn-v24-encoder-reset-4",
+                    "options": {
+                      "slot": {
+                        "isExpression": false,
+                        "value": "4"
+                      }
+                    },
+                    "type": "action",
+                    "upgradeIndex": 0
+                  }
+                ],
+                "rotate_left": [
+                  {
+                    "connectionId": "synesthesia-example-connection",
+                    "definitionId": "surface_adjust_rotary",
+                    "id": "syn-v24-encoder-left-4",
+                    "options": {
+                      "delta": {
+                        "isExpression": false,
+                        "value": "-0.05"
+                      },
+                      "slot": {
+                        "isExpression": false,
+                        "value": "4"
+                      }
+                    },
+                    "type": "action",
+                    "upgradeIndex": 0
+                  }
+                ],
+                "rotate_right": [
+                  {
+                    "connectionId": "synesthesia-example-connection",
+                    "definitionId": "surface_adjust_rotary",
+                    "id": "syn-v24-encoder-right-4",
+                    "options": {
+                      "delta": {
+                        "isExpression": false,
+                        "value": "0.05"
+                      },
+                      "slot": {
+                        "isExpression": false,
+                        "value": "4"
+                      }
+                    },
+                    "type": "action",
+                    "upgradeIndex": 0
+                  }
+                ],
+                "up": []
+              },
+              "options": {
+                "runWhileHeld": []
+              }
+            }
+          },
+          "style": {
+            "layers": [
+              {
+                "decoration": {
+                  "isExpression": false,
+                  "value": "default"
+                },
+                "id": "canvas",
+                "name": "Canvas",
+                "showStatusIcons": {
+                  "isExpression": false,
+                  "value": "default"
+                },
+                "type": "canvas",
+                "usage": "auto"
+              },
+              {
+                "borderColor": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "borderPosition": {
+                  "isExpression": false,
+                  "value": "inside"
+                },
+                "borderWidth": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "color": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "enabled": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "height": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "id": "box0",
+                "name": "Background",
+                "opacity": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "rotation": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "type": "box",
+                "usage": "auto",
+                "width": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "x": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "y": {
+                  "isExpression": false,
+                  "value": 0
+                }
+              },
+              {
+                "color": {
+                  "isExpression": false,
+                  "value": 16777215
+                },
+                "enabled": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "font": {
+                  "isExpression": false,
+                  "value": "companion-sans"
+                },
+                "fontsize": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "fontsizeAllowShrink": {
+                  "isExpression": false,
+                  "value": true
+                },
+                "halign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "height": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "id": "text0",
+                "name": "Text",
+                "opacity": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "outlineColor": {
+                  "isExpression": false,
+                  "value": 4278190080
+                },
+                "rotation": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "text": {
+                  "isExpression": false,
+                  "value": ""
+                },
+                "type": "text",
+                "usage": "auto",
+                "valign": {
+                  "isExpression": false,
+                  "value": "center"
+                },
+                "width": {
+                  "isExpression": false,
+                  "value": 100
+                },
+                "x": {
+                  "isExpression": false,
+                  "value": 0
+                },
+                "y": {
+                  "isExpression": false,
+                  "value": 0
+                }
+              }
+            ]
+          },
+          "type": "button-layered"
+        }
+      }
+    },
+    "name": "Synesthesia Rotary Surface for Stream Deck +"
+  },
+  "type": "page",
+  "version": 12
+}

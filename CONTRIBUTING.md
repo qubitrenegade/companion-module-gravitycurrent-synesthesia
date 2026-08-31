@@ -52,6 +52,7 @@ When reporting an OSC issue, include the Synesthesia version, Companion version,
 - Add or update tests for protocol parsing, generated routes, and dynamic surface placement.
 - Keep user-facing setup and troubleshooting in `companion/HELP.md`.
 - Put lasting project information in `README.md` and release-specific changes in `CHANGELOG.md`.
+- Record protocol boundaries and dependency decisions in `docs/ARCHITECTURE.md`.
 
 ## Pull requests
 
@@ -61,13 +62,15 @@ Do not include Companion configuration exports, logs, tokens, or other local sec
 
 ## Versioning and releases
 
-Development builds use prerelease versions such as `0.1.0-dev.25`. The first public beta will use `1.0.0-beta.1`. Additional beta fixes increment the beta number. Once the documented release criteria are met, the accepted beta line can be released as `1.0.0`.
+Development builds use prerelease versions such as `0.1.0-dev.27`. The planned first public beta is `1.0.0-beta.1`. Additional beta fixes increment the beta number. Once the documented release criteria are met, the accepted beta line can be released as `1.0.0`.
 
 Before a release:
 
 1. Run the full local checks.
 2. Verify the dynamic surface on hardware.
-3. Update `CHANGELOG.md`.
+3. Prepare and review the package version and `CHANGELOG.md` with `RELEASE_VERSION=<version> yarn release:prepare`.
 4. Build the package with the correct prerelease setting.
 5. Confirm the packaged manifest version and runtime.
-6. Tag the accepted commit and publish matching GitHub release notes.
+6. Tag the accepted commit and submit that tag through the Bitfocus Developer Portal.
+
+See [docs/RELEASING.md](docs/RELEASING.md) for the complete first-release flow.

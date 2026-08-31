@@ -27,6 +27,8 @@ export function UpdateVariableDefinitions(self: ModuleInstance): void {
 		feedback_detected_mode: { name: 'Control feedback mode most recently observed from Synesthesia' },
 		feedback_mode_mismatch: { name: 'Whether observed and configured feedback modes differ (1 or 0)' },
 		surface_mode: { name: 'Active dynamic control mode' },
+		surface_view: { name: 'Active dynamic control view' },
+		surface_media_sources: { name: 'Whether the Media source selector is visible (1 or 0)' },
 		surface_page: { name: 'Active dynamic control page' },
 		surface_page_count: { name: 'Number of dynamic control pages' },
 		playlist_playing: { name: 'Locally tracked playlist playing state (1 or 0)' },
@@ -36,6 +38,7 @@ export function UpdateVariableDefinitions(self: ModuleInstance): void {
 
 	for (let slot = 1; slot <= 18; slot++) {
 		definitions[`surface_button_${slot}_label`] = { name: `Dynamic button ${slot} label` }
+		definitions[`surface_button_${slot}_kind`] = { name: `Dynamic button ${slot} behavior kind` }
 		definitions[`surface_button_${slot}_active`] = { name: `Whether dynamic button ${slot} is assigned` }
 		definitions[`surface_button_${slot}_on`] = { name: `Dynamic button ${slot} active/on state` }
 		definitions[`surface_button_${slot}_locked`] = { name: `Whether dynamic button ${slot} is a locked group` }

@@ -17,6 +17,7 @@ function makeSurface() {
 		state: new SynesthesiaState(() => {}, 5000),
 		surfaceMode: 'scene',
 		surfacePage: 0,
+		mediaSourceView: false,
 		surfaceComponents: new Map(),
 		surfaceLocks: new Map(),
 		playlistPlaying: false,
@@ -42,10 +43,13 @@ test('dynamic scene mode centers random and discrete controls while leaving empt
 	instance.state.setControlValue('slider', 1, { kind: 'scalar', value: 0.25 })
 
 	instance.setSurfaceMode('scene')
-	assert.equal(variables().surface_button_1_label, 'RANDOM\nALL')
-	assert.equal(variables().surface_button_2_label, 'RANDOM\nSELECTED')
+	assert.equal(variables().surface_button_1_label, 'RANDOM ALL')
+	assert.equal(variables().surface_button_1_kind, 'bang')
+	assert.equal(variables().surface_button_2_label, 'RANDOM SELECTED')
 	assert.equal(variables().surface_button_11_label, 'TURBULENCE')
+	assert.equal(variables().surface_button_11_kind, 'toggle')
 	assert.equal(variables().surface_button_12_label, 'NEW BURST')
+	assert.equal(variables().surface_button_12_kind, 'bang')
 	assert.equal(variables().surface_button_10_label, '')
 	assert.equal(variables().surface_button_13_label, '')
 	assert.equal(variables().surface_rotary_1_label, 'FLUID AMOUNT')
@@ -116,8 +120,8 @@ test('random all targets both banks while random selected targets only the activ
 	instance.triggerSurfaceButton(1, true)
 	instance.triggerSurfaceButton(2, true)
 	instance.setSurfaceMode('meta')
-	assert.equal(variables().surface_button_1_label, 'RANDOM\nALL')
-	assert.equal(variables().surface_button_2_label, 'RANDOM\nSELECTED')
+	assert.equal(variables().surface_button_1_label, 'RANDOM ALL')
+	assert.equal(variables().surface_button_2_label, 'RANDOM SELECTED')
 	assert.equal(variables().surface_button_3_label, 'COLOR\nUNLOCKED')
 	instance.triggerSurfaceButton(2, true)
 	assert.deepEqual(sent, [
@@ -129,23 +133,37 @@ test('random all targets both banks while random selected targets only the activ
 	instance.state.destroy()
 })
 
-test('media mode exposes native navigation, media controls, allowed sources, and ten quick favslots', () => {
+test('pressing Media again switches between media controls and configured sources', () => {
 	const { instance, sent, variables } = makeSurface()
 	instance.setSurfaceMode('media')
 	assert.equal(variables().surface_button_1_label, 'SOURCE\nPREVIOUS')
 	assert.equal(variables().surface_button_2_label, 'SOURCE\nNEXT')
-	assert.equal(variables().surface_button_3_label, 'CAMERA A')
-	assert.equal(variables().surface_button_4_label, 'NDI FEED')
+	assert.equal(variables().surface_button_1_kind, 'navigation')
+	assert.equal(variables().surface_button_3_label, '')
 	assert.equal(variables().surface_button_10_label, 'INVERT MEDIA')
+	assert.equal(variables().surface_rotary_1_label, 'MEDIA CONTRAST')
+	assert.equal(variables().surface_view, 'CONTROLS')
+
+	instance.setSurfaceMode('media')
+	assert.equal(variables().surface_view, 'SOURCES')
+	assert.equal(variables().surface_media_sources, 1)
+	assert.equal(variables().surface_button_1_label, 'SOURCE\nPREVIOUS')
+	assert.equal(variables().surface_button_2_label, 'SOURCE\nNEXT')
 	assert.ok(
 		Array.from({ length: 16 }, (_, index) => variables()[`surface_button_${index + 1}_label`]).includes('CAMERA A'),
 	)
-	assert.equal(variables().surface_rotary_1_label, 'MEDIA CONTRAST')
+	assert.equal(variables().surface_rotary_1_label, '')
 	const cameraSlot = Array.from({ length: 16 }, (_, index) => index + 1).find(
 		(slot) => variables()[`surface_button_${slot}_label`] === 'CAMERA A',
 	)
 	assert.ok(cameraSlot)
 	instance.triggerSurfaceButton(cameraSlot, true)
+
+	instance.setSurfaceMode('media')
+	assert.equal(variables().surface_view, 'CONTROLS')
+	assert.equal(variables().surface_media_sources, 0)
+	assert.equal(variables().surface_button_10_label, 'INVERT MEDIA')
+	assert.equal(variables().surface_rotary_1_label, 'MEDIA CONTRAST')
 
 	instance.setSurfaceMode('favs')
 	assert.equal(variables().surface_page_count, 2)
@@ -201,12 +219,12 @@ test('rotary paging keeps a single page of scene toggles visible', () => {
 	}
 	instance.setSurfaceMode('scene')
 	assert.equal(variables().surface_page_count, 3)
-	assert.equal(variables().surface_button_1_label, 'RANDOM\nALL')
-	assert.equal(variables().surface_button_2_label, 'RANDOM\nSELECTED')
+	assert.equal(variables().surface_button_1_label, 'RANDOM ALL')
+	assert.equal(variables().surface_button_2_label, 'RANDOM SELECTED')
 	assert.equal(variables().surface_button_12_label, 'ZERO FEEDBACK')
 	instance.changeSurfacePage('next')
 	assert.equal(variables().surface_rotary_1_label, 'SLIDER 7')
-	assert.equal(variables().surface_button_1_label, 'RANDOM\nALL')
+	assert.equal(variables().surface_button_1_label, 'RANDOM ALL')
 	assert.equal(variables().surface_button_12_label, 'ZERO FEEDBACK')
 	instance.changeSurfacePage('next')
 	assert.equal(variables().surface_rotary_1_label, 'SLIDER 13')
@@ -225,7 +243,7 @@ test('button paging changes only when discrete controls need another page', () =
 	assert.equal(variables().surface_button_8_label, 'TOGGLE 1')
 	assert.equal(variables().surface_button_16_label, 'TOGGLE 9')
 	instance.changeSurfacePage('next')
-	assert.equal(variables().surface_button_1_label, 'RANDOM\nALL')
+	assert.equal(variables().surface_button_1_label, 'RANDOM ALL')
 	assert.equal(variables().surface_button_9_label, 'TOGGLE 10')
 	assert.equal(variables().surface_button_15_label, 'TOGGLE 16')
 	instance.state.destroy()

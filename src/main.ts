@@ -72,6 +72,7 @@ export default class ModuleInstance extends InstanceBase<ModuleSchema> {
 	private configuredPresetScene = ''
 	private surfaceMode: SurfaceMode = 'scene'
 	private surfacePage = 0
+	private mediaSourceView = false
 	private readonly surfaceComponents = new Map<string, string>()
 	private readonly surfaceLocks = new Map<string, boolean>()
 	private playlistPlaying = false
@@ -110,6 +111,7 @@ export default class ModuleInstance extends InstanceBase<ModuleSchema> {
 		this.configuredMediaIndex = -1
 		this.configuredPresetIndex = -1
 		this.configuredPresetScene = ''
+		this.mediaSourceView = false
 		this.state.setFreshnessTimeout(this.config.freshnessTimeoutMs)
 		this.processor.setValueMode(this.config.feedbackValueMode)
 		this.refreshSurface()
@@ -117,7 +119,12 @@ export default class ModuleInstance extends InstanceBase<ModuleSchema> {
 	}
 
 	setSurfaceMode(mode: SurfaceMode): void {
-		this.surfaceMode = mode
+		if (mode === 'media' && this.surfaceMode === 'media') {
+			this.mediaSourceView = !this.mediaSourceView
+		} else {
+			this.surfaceMode = mode
+			this.mediaSourceView = false
+		}
 		this.surfacePage = 0
 		this.refreshSurface()
 	}
@@ -143,6 +150,16 @@ export default class ModuleInstance extends InstanceBase<ModuleSchema> {
 		}
 		if (button.kind === 'group-lock') return false
 		return button.kind === 'media' && button.name === this.selectedMedia
+	}
+
+	private surfaceButtonKind(button: SurfaceButton | undefined): string {
+		if (!button) return ''
+		if (button.kind === 'global') return button.control.type
+		if (button.kind === 'meta') return button.controlKind
+		if (button.kind === 'media-nav') return 'navigation'
+		if (button.kind === 'all-bank-random' || button.kind === 'bank-random') return 'bang'
+		if (button.kind === 'group-lock') return 'toggle'
+		return 'select'
 	}
 
 	isSurfaceButtonLocked(slot: number): boolean {
@@ -475,14 +492,14 @@ export default class ModuleInstance extends InstanceBase<ModuleSchema> {
 	private surfaceTopButtons(): SurfaceButton[] {
 		if (this.surfaceMode === 'scene') {
 			return [
-				{ kind: 'all-bank-random', label: 'RANDOM\nALL' },
-				{ kind: 'bank-random', bank: 'scene', label: 'RANDOM\nSELECTED' },
+				{ kind: 'all-bank-random', label: 'RANDOM ALL' },
+				{ kind: 'bank-random', bank: 'scene', label: 'RANDOM SELECTED' },
 			]
 		}
 		if (this.surfaceMode === 'meta') {
 			return [
-				{ kind: 'all-bank-random', label: 'RANDOM\nALL' },
-				{ kind: 'bank-random', bank: 'meta', label: 'RANDOM\nSELECTED' },
+				{ kind: 'all-bank-random', label: 'RANDOM ALL' },
+				{ kind: 'bank-random', bank: 'meta', label: 'RANDOM SELECTED' },
 				this.groupLockButton('meta', 'color', 'COLOR'),
 			]
 		}
@@ -490,11 +507,6 @@ export default class ModuleInstance extends InstanceBase<ModuleSchema> {
 			return [
 				{ kind: 'media-nav', direction: 'previous', label: 'SOURCE\nPREVIOUS' },
 				{ kind: 'media-nav', direction: 'next', label: 'SOURCE\nNEXT' },
-				...configuredMediaSources(this.config).map((name) => ({
-					kind: 'media' as const,
-					name,
-					label: displayControlName(name),
-				})),
 			]
 		}
 		return []
@@ -503,6 +515,13 @@ export default class ModuleInstance extends InstanceBase<ModuleSchema> {
 	private surfacePagedButtons(): SurfaceButton[] {
 		if (this.surfaceMode === 'favs') {
 			return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((position) => ({ kind: 'fav', position, label: `FAV ${position}` }))
+		}
+		if (this.surfaceMode === 'media' && this.mediaSourceView) {
+			return configuredMediaSources(this.config).map((name) => ({
+				kind: 'media' as const,
+				name,
+				label: displayControlName(name),
+			}))
 		}
 		const buttons: SurfaceButton[] = []
 		if (this.surfaceMode === 'meta') {
@@ -547,6 +566,7 @@ export default class ModuleInstance extends InstanceBase<ModuleSchema> {
 	}
 
 	private surfaceRotaries(): SurfaceRotary[] {
+		if (this.surfaceMode === 'media' && this.mediaSourceView) return []
 		if (this.surfaceMode === 'scene') {
 			return this.state.getActiveControls(['slider', 'knob', 'dropdown', 'xy', 'color']).map((control) => {
 				const key = controlComponentKey(control)
@@ -640,6 +660,8 @@ export default class ModuleInstance extends InstanceBase<ModuleSchema> {
 		if (this.surfacePage >= pageCount) this.surfacePage = pageCount - 1
 		const values: Record<string, string | number> = {
 			surface_mode: this.surfaceMode.toUpperCase(),
+			surface_view: this.mediaSourceView ? 'SOURCES' : 'CONTROLS',
+			surface_media_sources: this.mediaSourceView ? 1 : 0,
 			surface_page: this.surfacePage + 1,
 			surface_page_count: pageCount,
 			playlist_playing: this.playlistPlaying ? 1 : 0,
@@ -649,6 +671,7 @@ export default class ModuleInstance extends InstanceBase<ModuleSchema> {
 		for (let slot = 1; slot <= SURFACE_BUTTON_SLOTS; slot++) {
 			const button = this.surfaceButton(slot)
 			values[`surface_button_${slot}_label`] = button?.label ?? ''
+			values[`surface_button_${slot}_kind`] = this.surfaceButtonKind(button)
 			values[`surface_button_${slot}_active`] = button ? 1 : 0
 			values[`surface_button_${slot}_on`] = this.isSurfaceButtonOn(slot) ? 1 : 0
 			values[`surface_button_${slot}_locked`] = this.isSurfaceButtonLocked(slot) ? 1 : 0

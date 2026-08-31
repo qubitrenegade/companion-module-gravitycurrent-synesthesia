@@ -25,7 +25,7 @@ The module defaults match Synesthesia's displayed OSC defaults: input port `6000
 
 Set the Companion target host to the LAN address of the Synesthesia computer. Set Synesthesia's OSC Output Address to the LAN address of the Companion computer. Keep the input and output port pairs matched and allow the selected UDP ports through both operating-system firewalls. Bind Companion to `0.0.0.0` or the specific local interface address that should receive feedback.
 
-OSC is UDP. A local send does not prove that Synesthesia received or applied an action. The **Listener Ready** feedback means only that Companion opened its local UDP socket. The **Feedback Recently Received** feedback means Synesthesia sent at least one supported scene or global-control message within the configured freshness timeout.
+OSC uses UDP. **Listener Ready** confirms that Companion opened its local UDP socket. **Feedback Recently Received** confirms that Synesthesia sent at least one supported scene or global-control message within the configured freshness timeout. These indicators intentionally describe local listener state and recent feedback activity separately.
 
 ## Dynamic global controls and a rotary
 
@@ -61,7 +61,7 @@ Available state feedback includes:
 - supported Synesthesia feedback was received recently
 - the local UDP listener is ready
 
-Scene launch output provides the current scene name. The OSC API does not provide a list of every installed scene, preset, favslot name, or media source. Presets created through Companion are therefore learned and persisted per scene; existing Synesthesia presets remain reachable by name or favslot.
+Scene launch output provides the current scene name. Catalog discovery for every installed scene, preset, Fav name, or media source is not currently part of the documented OSC routes. Presets created through Companion are learned and persisted per scene; existing Synesthesia presets remain reachable by name or Fav position.
 
 ## Presets
 
@@ -71,15 +71,24 @@ Global slider and knob rotary templates cover positions 1 through 16. Global tog
 
 ## Dynamic performance surface
 
-Dynamic surface actions compact active controls received through Synesthesia's **Global Addresses** output. Scene mode centers named toggles and bangs on the bottom button row and fills rotaries with sliders, knobs, dropdowns, XY controls, and colors. Meta mode centers its toggles and bangs on the bottom row; mirrors and Limit Colors are buttons while Low Color and High Color are RGB rotaries. Media mode contains media color, transform, playback, and overlay controls. Its context row starts with source Previous/Next and then shows the optional configured exact-name source allowlist. Unknown future meta controls still use dimensional fallback discovery. Favslots mode shows Fav 1 through 9 on its first page and Fav 2 through 10 on its second page.
+Dynamic surface actions compact active controls received through Synesthesia's **Global Addresses** output. Scene mode centers named toggles and bangs on the bottom button row and fills rotaries with sliders, knobs, dropdowns, XY controls, and colors. Meta mode centers its toggles and bangs on the bottom row; mirrors and Limit Colors are buttons while Low Color and High Color are RGB rotaries. Media mode contains media color, transform, playback, and overlay controls. Press Media a second time to show the configured exact-name source list; press it again to return to Media controls. Source Previous and Next remain available in both Media views. Unknown future Meta controls still use dimensional fallback discovery. Favs mode shows Fav 1 through 9 on its first page and Fav 2 through 10 on its second page.
 
-Controls Previous/Next advances the shared surface page. Each control area changes only when that area has additional content: if one page can hold all toggles and bangs, they remain visible while the same navigation pages through additional rotaries. Random All stays at the start of the Scene and Meta context row and randomizes both banks. Random Selected affects only the active Scene or Meta bank. The supplied Stream Deck page also keeps Global Default and Global Undo in fixed positions. Global Undo is a two-command convenience operation that invokes scene-bank undo followed by meta-bank undo; Synesthesia does not expose a native atomic global undo or redo.
+Controls Previous/Next advances the shared surface page. Each control area changes only when that area has additional content: if one page can hold all toggles and bangs, they remain visible while the same navigation pages through additional rotaries. Random All stays at the start of the Scene and Meta context row and randomizes both banks. Random Selected affects only the active Scene or Meta bank. The supplied Stream Deck + XL page also keeps Global Default and Global Undo in fixed positions. Global Undo combines the available Scene undo and Meta undo operations in sequence.
 
 - Rotate to adjust the assigned normalized value.
 - Press a dial to restore that control's default.
 - Touch its LCD to toggle scalar lock state. For XY and color controls, touch cycles X/Y or R/G/B instead.
 - Empty dynamic slots stay blank and do nothing.
 - Generated preset names use `YY-MM-DD HH:MM:SS - Companion`.
+
+## Example pages
+
+The module includes plain, uncompressed page exports that can be reviewed before import:
+
+- [Stream Deck + XL dynamic surface](assets/streamdeck-plus-xl-synesthesia-surface.companionconfig) demonstrates the complete 16-button and six-rotary surface.
+- [Stream Deck + rotary surface](assets/streamdeck-plus-synesthesia-surface.companionconfig) is a compact starter page with the four modes, control paging, Global Default and Undo, and four dynamic rotaries.
+
+Import an example from Companion's Buttons page, then map its placeholder **Synesthesia** connection to your connection. The compact Stream Deck + page emphasizes rotary control because the device has fewer physical controls; add direct Favs or dynamic button actions to suit the controls you use most often.
 
 ## Troubleshooting
 
@@ -92,6 +101,6 @@ Controls Previous/Next advances the shared surface page. Each control area chang
 - Set **Control Address Format** to **Global Addresses**. Dynamic scene-control names and values use `/controls/global/{type}/{position}` routes; scene-specific output cannot populate those controls.
 - **Feedback Recently Received** is a traffic indicator, not a connection state. Synesthesia output is event-driven, so it can become stale while the last received control values remain valid.
 - If **Listener Ready** is true but no feedback ever becomes recent, check Synesthesia OSC Output, its destination address, firewall rules, and whether supported scene or global-control output is enabled.
-- Native media Previous/Next follows Synesthesia's own loaded order and cannot exclude devices. Configured media/live-source buttons use only the exact allowlist in the connection settings. Synesthesia can select media by name or position but does not expose its source list over OSC.
+- Native media Previous/Next follows Synesthesia's loaded order. Configured media/live-source buttons use only the exact allowlist in the connection settings, which provides a practical way to omit unwanted devices. Automatic checklist population can be added if media-source discovery becomes available through the OSC interface.
 - Preset Previous/Next cycles `default`, legacy configured names, and presets created through Companion, persisted separately for each scene. Synesthesia's existing per-scene preset catalog and native preset-step operations are not exposed over OSC; Fav 1 through 10 remain the reliable quick access path for existing presets.
 - For two computers, do not use `127.0.0.1` as the destination. It always refers to the sender's own computer.

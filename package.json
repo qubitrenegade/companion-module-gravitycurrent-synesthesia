@@ -1,6 +1,6 @@
 {
 	"name": "gravitycurrent-synesthesia",
-	"version": "0.1.0-dev.25",
+	"version": "0.1.0-dev.27",
 	"main": "dist/main.js",
 	"type": "module",
 	"scripts": {
@@ -12,12 +12,13 @@
 		"test": "yarn build && node --test tests/*.test.js",
 		"dev": "tsc -p tsconfig.build.json --watch",
 		"lint:raw": "eslint",
-		"lint": "run lint:raw ."
+		"lint": "run lint:raw .",
+		"release:prepare": "node scripts/prepare-release.mjs"
 	},
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/qubitrenegade/companion-module-gravitycurrent-synesthesia.git"
+		"url": "git+https://github.com/bitfocus/companion-module-gravitycurrent-synesthesia.git"
 	},
 	"engines": {
 		"node": "^22.20",

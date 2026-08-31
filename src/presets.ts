@@ -12,6 +12,7 @@ import type { ModuleSchema } from './main.js'
 const white = 0xffffff
 const blue = 0x154c79
 const purple = 0x5b2380
+const amber = 0x9a4d00
 const green = 0x006600
 const red = 0x660000
 const positions = Array.from({ length: 16 }, (_, index) => ({
@@ -50,7 +51,7 @@ export function UpdatePresets(self: ModuleInstance): void {
 				},
 				{
 					id: 'favslots',
-					name: 'Favslots',
+					name: 'Favs',
 					type: 'simple',
 					presets: [
 						'favslot_1',
@@ -227,13 +228,13 @@ export function UpdatePresets(self: ModuleInstance): void {
 		media_previous_configured: button(
 			'Previous Configured Media/Live Source',
 			'MEDIA\nPREVIOUS',
-			purple,
+			blue,
 			action('cycle_configured_media', { direction: 'previous' }),
 		),
 		media_next_configured: button(
 			'Next Configured Media/Live Source',
 			'MEDIA\nNEXT',
-			purple,
+			blue,
 			action('cycle_configured_media', { direction: 'next' }),
 		),
 		create_preset: longPressButton(
@@ -439,7 +440,7 @@ function bangButton(): SimplePresetDefinition {
 		type: 'simple',
 		name: 'Global Bang',
 		localVariables: [localVariable('position', '1')],
-		style: style('BANG\n$(local:position)', purple),
+		style: style('BANG\n$(local:position)', amber),
 		steps: [
 			{
 				down: [action('set_global_control', { type: 'bang', position, values: '1', raw: false })],
