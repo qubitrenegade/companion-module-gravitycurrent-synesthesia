@@ -4,6 +4,56 @@ import type { FeedbackValueMode } from './config.js'
 export const GLOBAL_CONTROL_TYPES = ['slider', 'knob', 'toggle', 'bang', 'xy', 'color', 'dropdown'] as const
 export type GlobalControlType = (typeof GLOBAL_CONTROL_TYPES)[number]
 export const GLOBAL_CONTROL_POSITIONS = 16
+export type MetaControlKind = 'scalar' | 'toggle' | 'bang' | 'color' | 'dropdown'
+export type MetaControlDefinition = {
+	name: string
+	label: string
+	kind: MetaControlKind
+	group: 'master' | 'color' | 'transform' | 'audio' | 'media-color' | 'media-transform' | 'video'
+}
+
+/*
+ * Meta controls are part of Synesthesia itself rather than an individual scene.
+ * Unlike global scene controls, OSC output does not send type/name metadata for
+ * them, so their stable schema has to be classified here. These identifiers and
+ * types come from Synesthesia 1.25.4's hydrated native control structure; unknown
+ * future identifiers still fall back to dimensional discovery.
+ */
+export const META_CONTROL_DEFINITIONS: readonly MetaControlDefinition[] = [
+	{ name: 'master', label: 'MASTER', kind: 'scalar', group: 'master' },
+	{ name: 'brightness', label: 'BRIGHTNESS', kind: 'scalar', group: 'color' },
+	{ name: 'gamma', label: 'GAMMA', kind: 'scalar', group: 'color' },
+	{ name: 'contrast', label: 'CONTRAST', kind: 'scalar', group: 'color' },
+	{ name: 'hue', label: 'HUE', kind: 'scalar', group: 'color' },
+	{ name: 'saturation', label: 'SATURATION', kind: 'scalar', group: 'color' },
+	{ name: 'invert', label: 'INVERT', kind: 'toggle', group: 'color' },
+	{ name: 'vertmirror', label: 'VERT MIRROR', kind: 'toggle', group: 'transform' },
+	{ name: 'hormirror', label: 'HORIZ MIRROR', kind: 'toggle', group: 'transform' },
+	{ name: 'limitcolors', label: 'LIMIT COLORS', kind: 'toggle', group: 'color' },
+	{ name: 'lowcolor', label: 'LOW COLOR', kind: 'color', group: 'color' },
+	{ name: 'highcolor', label: 'HIGH COLOR', kind: 'color', group: 'color' },
+	{ name: 'transition', label: 'TRANSITION', kind: 'bang', group: 'master' },
+	{ name: 'alphachannel', label: 'ALPHA CHANNEL', kind: 'toggle', group: 'master' },
+	{ name: 'mediacontrast', label: 'MEDIA CONTRAST', kind: 'scalar', group: 'media-color' },
+	{ name: 'mediagamma', label: 'MEDIA GAMMA', kind: 'scalar', group: 'media-color' },
+	{ name: 'mediahue', label: 'MEDIA HUE', kind: 'scalar', group: 'media-color' },
+	{ name: 'mediasaturation', label: 'MEDIA SATURATION', kind: 'scalar', group: 'media-color' },
+	{ name: 'invertmedia', label: 'INVERT MEDIA', kind: 'toggle', group: 'media-color' },
+	{ name: 'vertflip', label: 'VERT FLIP', kind: 'toggle', group: 'media-transform' },
+	{ name: 'fitorfill', label: 'FIT OR FILL', kind: 'toggle', group: 'media-transform' },
+	{ name: 'horflip', label: 'HORIZ FLIP', kind: 'toggle', group: 'media-transform' },
+	{ name: 'mediascale', label: 'MEDIA SCALE', kind: 'scalar', group: 'media-transform' },
+	{ name: 'paused', label: 'PAUSED', kind: 'toggle', group: 'video' },
+	{ name: 'playbackspeed', label: 'PLAYBACK SPEED', kind: 'scalar', group: 'video' },
+	{ name: 'playbackmode', label: 'PLAYBACK MODE', kind: 'dropdown', group: 'video' },
+	{ name: 'mediaoverlaymode', label: 'MEDIA OVERLAY MODE', kind: 'dropdown', group: 'video' },
+	{ name: 'mediaoverlay', label: 'MEDIA OVERLAY', kind: 'scalar', group: 'video' },
+	{ name: 'reactivity', label: 'REACTIVITY', kind: 'scalar', group: 'audio' },
+	{ name: 'audiospeed', label: 'AUDIO SPEED', kind: 'scalar', group: 'audio' },
+] as const
+export const META_CONTROL_NAMES = META_CONTROL_DEFINITIONS.map((control) => control.name)
+const META_CONTROLS_BY_NAME = new Map(META_CONTROL_DEFINITIONS.map((control) => [control.name, control]))
+export type ControlBank = 'scene' | 'meta'
 
 export type GlobalControlValue =
 	| { kind: 'scalar'; value: number }
@@ -18,7 +68,13 @@ export type GlobalControlState = {
 	value?: GlobalControlValue
 }
 
-export type FeedbackId = 'current_scene' | 'global_toggle' | 'global_value' | 'feedback_fresh' | 'listener_ready'
+export type ActiveGlobalControl = GlobalControlState & {
+	type: GlobalControlType
+	position: number
+}
+
+export type FeedbackId =
+	'current_scene' | 'global_toggle' | 'global_value' | 'bank_locked' | 'feedback_fresh' | 'listener_ready'
 
 export type StateChange = {
 	variables: Record<string, CompanionVariableValue>
@@ -43,6 +99,12 @@ export class SynesthesiaState {
 	lastSceneReceivedAt = ''
 	lastFeedbackAt?: number
 	listenerReady = false
+	oscMessagesReceived = 0
+	readonly bankLocks: Record<ControlBank, boolean> = { scene: false, meta: false }
+	readonly metaValues = new Map<string, GlobalControlValue>()
+	detectedFeedbackMode = ''
+	feedbackModeMismatch = false
+	private metaControlsRevision = 0
 
 	private pendingVariables: Record<string, CompanionVariableValue> = {}
 	private pendingFeedbacks = new Set<FeedbackId>()
@@ -74,6 +136,18 @@ export class SynesthesiaState {
 		this.queue({ socket_listening: ready ? 1 : 0 }, ['listener_ready'])
 	}
 
+	markOscReceived(address: string): void {
+		this.oscMessagesReceived++
+		this.queue(
+			{
+				osc_last_address: address,
+				osc_last_received_at: new Date(this.scheduler.now()).toISOString(),
+				osc_messages_received: this.oscMessagesReceived,
+			},
+			[],
+		)
+	}
+
 	markSupportedFeedbackReceived(): void {
 		const now = this.scheduler.now()
 		this.lastFeedbackAt = now
@@ -88,6 +162,20 @@ export class SynesthesiaState {
 			becameFresh ? ['feedback_fresh'] : [],
 		)
 		this.scheduleFreshnessExpiry()
+	}
+
+	observeFeedbackMode(mode: FeedbackValueMode, expected: FeedbackValueMode): void {
+		const mismatch = mode !== expected
+		if (this.detectedFeedbackMode === mode && this.feedbackModeMismatch === mismatch) return
+		this.detectedFeedbackMode = mode
+		this.feedbackModeMismatch = mismatch
+		this.queue(
+			{
+				feedback_detected_mode: mode,
+				feedback_mode_mismatch: mismatch ? 1 : 0,
+			},
+			[],
+		)
 	}
 
 	isFeedbackFresh(): boolean {
@@ -105,7 +193,10 @@ export class SynesthesiaState {
 		const control = this.controls.get(controlKey(type, position))
 		if (!control || (control.name === name && !(name === '' && control.value))) return
 		control.name = name
-		const variables: Record<string, CompanionVariableValue> = { [variableId(type, position, 'name')]: name }
+		const variables: Record<string, CompanionVariableValue> = {
+			[variableId(type, position, 'name')]: name,
+			[variableId(type, position, 'label')]: displayControlName(name),
+		}
 		const feedbacks: FeedbackId[] = []
 		if (name === '' && control.value) {
 			control.value = undefined
@@ -142,6 +233,132 @@ export class SynesthesiaState {
 		}
 	}
 
+	getActiveControls(types: readonly GlobalControlType[] = GLOBAL_CONTROL_TYPES): ActiveGlobalControl[] {
+		const controls: ActiveGlobalControl[] = []
+		for (const type of types) {
+			for (let position = 1; position <= GLOBAL_CONTROL_POSITIONS; position++) {
+				const control = this.controls.get(controlKey(type, position))
+				if (control?.name) controls.push({ type, position, name: control.name, value: control.value })
+			}
+		}
+		return controls
+	}
+
+	setNumericComponent(type: GlobalControlType, position: number, component: string, next: number): void {
+		const current = this.controls.get(controlKey(type, position))?.value
+		switch (type) {
+			case 'slider':
+			case 'knob':
+				this.setControlValue(type, position, { kind: 'scalar', value: next })
+				break
+			case 'dropdown':
+				this.setControlValue(type, position, { kind: 'dropdown', value: next })
+				break
+			case 'xy':
+				this.setControlValue(type, position, {
+					kind: 'xy',
+					x: component === 'x' ? next : current?.kind === 'xy' ? current.x : 0.5,
+					y: component === 'y' ? next : current?.kind === 'xy' ? current.y : 0.5,
+				})
+				break
+			case 'color':
+				this.setControlValue(type, position, {
+					kind: 'color',
+					r: component === 'r' ? next : current?.kind === 'color' ? current.r : 0.5,
+					g: component === 'g' ? next : current?.kind === 'color' ? current.g : 0.5,
+					b: component === 'b' ? next : current?.kind === 'color' ? current.b : 0.5,
+				})
+				break
+			case 'toggle':
+			case 'bang':
+				break
+		}
+	}
+
+	setMetaScalarValue(name: string, value: number): void {
+		this.setMetaControlValue(name, { kind: 'scalar', value })
+	}
+
+	getMetaScalarValue(name: string): number | undefined {
+		return this.getMetaNumericValue(name)
+	}
+
+	setMetaControlValue(name: string, value: GlobalControlValue): void {
+		value = coerceMetaControlValue(name, value)
+		if (sameValue(this.metaValues.get(name), value)) return
+		this.metaValues.set(name, value)
+		const variables: Record<string, CompanionVariableValue> = {
+			meta_controls_revision: ++this.metaControlsRevision,
+		}
+		if ((META_CONTROL_NAMES as readonly string[]).includes(name))
+			variables[metaVariableId(name)] = formatMetaValue(value)
+		this.queue(variables, ['global_value'])
+	}
+
+	getMetaControlValue(name: string): GlobalControlValue | undefined {
+		return this.metaValues.get(name)
+	}
+
+	getMetaNumericValue(name: string, component = 'value'): number | undefined {
+		const value = this.metaValues.get(name)
+		if (!value) return undefined
+		switch (value.kind) {
+			case 'scalar':
+			case 'dropdown':
+				return value.value
+			case 'toggle':
+			case 'bang':
+				return value.value ? 1 : 0
+			case 'xy':
+				return component === 'y' ? value.y : value.x
+			case 'color':
+				return component === 'g' ? value.g : component === 'b' ? value.b : value.r
+		}
+	}
+
+	setMetaNumericComponent(name: string, component: string, next: number): void {
+		const current = this.metaValues.get(name)
+		if (current?.kind === 'xy') {
+			this.setMetaControlValue(name, {
+				kind: 'xy',
+				x: component === 'x' ? next : current.x,
+				y: component === 'y' ? next : current.y,
+			})
+		} else if (current?.kind === 'color') {
+			this.setMetaControlValue(name, {
+				kind: 'color',
+				r: component === 'r' ? next : current.r,
+				g: component === 'g' ? next : current.g,
+				b: component === 'b' ? next : current.b,
+			})
+		} else if (component === 'x' || component === 'y') {
+			this.setMetaControlValue(name, {
+				kind: 'xy',
+				x: component === 'x' ? next : 0.5,
+				y: component === 'y' ? next : 0.5,
+			})
+		} else if (component === 'r' || component === 'g' || component === 'b') {
+			this.setMetaControlValue(name, {
+				kind: 'color',
+				r: component === 'r' ? next : 0.5,
+				g: component === 'g' ? next : 0.5,
+				b: component === 'b' ? next : 0.5,
+			})
+		} else {
+			this.setMetaScalarValue(name, next)
+		}
+	}
+
+	setBankLocked(bank: ControlBank, locked: boolean): void {
+		if (this.bankLocks[bank] === locked) return
+		this.bankLocks[bank] = locked
+		this.queue({ [`${bank}_bank_locked`]: locked ? 1 : 0 }, ['bank_locked'])
+	}
+
+	isBankLocked(bank: ControlBank): boolean {
+		return this.bankLocks[bank]
+	}
+
 	getInitialVariableValues(): Record<string, CompanionVariableValue> {
 		const values: Record<string, CompanionVariableValue> = {
 			current_scene: this.currentScene,
@@ -150,10 +367,20 @@ export class SynesthesiaState {
 			feedback_age_ms: '',
 			feedback_fresh: 0,
 			socket_listening: this.listenerReady ? 1 : 0,
+			osc_last_address: '',
+			osc_last_received_at: '',
+			osc_messages_received: this.oscMessagesReceived,
+			scene_bank_locked: this.bankLocks.scene ? 1 : 0,
+			meta_bank_locked: this.bankLocks.meta ? 1 : 0,
+			meta_controls_revision: this.metaControlsRevision,
+			feedback_detected_mode: this.detectedFeedbackMode,
+			feedback_mode_mismatch: this.feedbackModeMismatch ? 1 : 0,
 		}
+		for (const name of META_CONTROL_NAMES) values[metaVariableId(name)] = ''
 		for (const type of GLOBAL_CONTROL_TYPES) {
 			for (let position = 1; position <= GLOBAL_CONTROL_POSITIONS; position++) {
 				values[variableId(type, position, 'name')] = ''
+				values[variableId(type, position, 'label')] = ''
 				values[variableId(type, position, 'value')] = ''
 				if (type === 'xy') {
 					values[variableId(type, position, 'x')] = ''
@@ -264,9 +491,34 @@ export function variableId(type: GlobalControlType, position: number, suffix: st
 	return `global_${type}_${position}_${suffix}`
 }
 
+export function metaVariableId(name: string): string {
+	return `meta_${name}_value`
+}
+
+export function metaControlDefinition(name: string): MetaControlDefinition | undefined {
+	return META_CONTROLS_BY_NAME.get(name)
+}
+
+export function metaControlLabel(name: string): string {
+	return metaControlDefinition(name)?.label ?? displayControlName(name)
+}
+
+function coerceMetaControlValue(name: string, value: GlobalControlValue): GlobalControlValue {
+	const definition = metaControlDefinition(name)
+	if (!definition || value.kind !== 'scalar') return value
+	if (definition.kind === 'toggle') return { kind: 'toggle', value: value.value >= 0.5 }
+	if (definition.kind === 'bang') return { kind: 'bang', value: value.value >= 0.5 }
+	if (definition.kind === 'dropdown') return { kind: 'dropdown', value: value.value }
+	return value
+}
+
 export function formatNumber(value: number): string {
 	if (!Number.isFinite(value)) return ''
 	return Number(value.toFixed(4)).toString()
+}
+
+export function displayControlName(value: string): string {
+	return value.trim().replaceAll(/[_-]+/g, ' ').replaceAll(/\s+/g, ' ').toUpperCase()
 }
 
 function formatControlVariables(
@@ -316,4 +568,19 @@ function clearControlValueVariables(type: GlobalControlType, position: number): 
 
 function sameValue(left: GlobalControlValue | undefined, right: GlobalControlValue): boolean {
 	return left !== undefined && JSON.stringify(left) === JSON.stringify(right)
+}
+
+function formatMetaValue(value: GlobalControlValue): string | number {
+	switch (value.kind) {
+		case 'scalar':
+		case 'dropdown':
+			return formatNumber(value.value)
+		case 'toggle':
+		case 'bang':
+			return value.value ? 1 : 0
+		case 'xy':
+			return `${formatNumber(value.x)}, ${formatNumber(value.y)}`
+		case 'color':
+			return `${formatNumber(value.r)}, ${formatNumber(value.g)}, ${formatNumber(value.b)}`
+	}
 }

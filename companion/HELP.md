@@ -45,7 +45,7 @@ Synesthesia reports 16 names for each global control type when a scene launches.
 
 The preset assumes the Companion connection label is `Synesthesia`. If you rename the connection, select the variables again or replace that label in the button text.
 
-Relative rotary actions need inbound normalized values. If feedback is disabled, stale, configured as raw, or Synesthesia is not outputting global normalized controls, use **Global Control: Set Value** for absolute control instead.
+Dynamic surface rotaries use the last inbound normalized value and stay blank until one arrives; they do not invent a starting number. Raw feedback mode cannot safely drive unknown-range relative sliders. When Synesthesia labels known 0-to-1 toggle or RGB output with `/raw` despite the normalized-output setting, the module accepts those unambiguous values while retaining the `feedback_detected_mode` and `feedback_mode_mismatch` diagnostics.
 
 XY values are formatted as `x, y`; color values are formatted as `r, g, b`. Separate component variables such as `global_xy_1_x` and `global_color_1_r` are also available.
 
@@ -61,13 +61,25 @@ Available state feedback includes:
 - supported Synesthesia feedback was received recently
 - the local UDP listener is ready
 
-Scene launch output provides the current scene name. The documented API does not provide a list of every installed scene or preset, so the module does not promise enumeration.
+Scene launch output provides the current scene name. The OSC API does not provide a list of every installed scene, preset, favslot name, or media source. Presets created through Companion are therefore learned and persisted per scene; existing Synesthesia presets remain reachable by name or favslot.
 
 ## Presets
 
-The preset catalog includes playlist transport, positions 1 through 16, favslots 1 through 4, rendering on and off, scene and preset launch templates, media selection, scene and meta bank operations, brightness levels, and OSC state indicators. Creating a preset changes the current Synesthesia project, so its supplied button requires a one-second hold.
+The preset catalog includes playlist transport, positions 1 through 16, favslots 1 through 10, rendering on and off, scene and preset launch templates, media selection, scene and meta bank operations, brightness levels, and OSC state indicators. Creating a preset changes the current Synesthesia project, so its supplied button requires a one-second hold.
 
 Global slider and knob rotary templates cover positions 1 through 16. Global toggle templates invert fresh normalized feedback and show the received on state. Global bang templates provide one trigger for each position. The richer Global Slider 1 preset retains the dynamic name and value LCD example described above.
+
+## Dynamic performance surface
+
+Dynamic surface actions compact active controls received through Synesthesia's **Global Addresses** output. Scene mode centers named toggles and bangs on the bottom button row and fills rotaries with sliders, knobs, dropdowns, XY controls, and colors. Meta mode centers its toggles and bangs on the bottom row; mirrors and Limit Colors are buttons while Low Color and High Color are RGB rotaries. Media mode contains media color, transform, playback, and overlay controls. Its context row starts with source Previous/Next and then shows the optional configured exact-name source allowlist. Unknown future meta controls still use dimensional fallback discovery. Favslots mode shows Fav 1 through 9 on its first page and Fav 2 through 10 on its second page.
+
+Controls Previous/Next advances the shared surface page. Each control area changes only when that area has additional content: if one page can hold all toggles and bangs, they remain visible while the same navigation pages through additional rotaries. Random All stays at the start of the Scene and Meta context row and randomizes both banks. Random Selected affects only the active Scene or Meta bank. The supplied Stream Deck page also keeps Global Default and Global Undo in fixed positions. Global Undo is a two-command convenience operation that invokes scene-bank undo followed by meta-bank undo; Synesthesia does not expose a native atomic global undo or redo.
+
+- Rotate to adjust the assigned normalized value.
+- Press a dial to restore that control's default.
+- Touch its LCD to toggle scalar lock state. For XY and color controls, touch cycles X/Y or R/G/B instead.
+- Empty dynamic slots stay blank and do nothing.
+- Generated preset names use `YY-MM-DD HH:MM:SS - Companion`.
 
 ## Troubleshooting
 
@@ -77,5 +89,9 @@ Global slider and knob rotary templates cover positions 1 through 16. Global tog
 - Confirm Synesthesia and Companion both use normalized output expectations, or both use raw expectations.
 - Use Global Addresses in Synesthesia if global name and value variables should follow scene changes.
 - If **Listener Ready** is false, another process may own the port or the listen address may not exist on the Companion computer.
-- If **Listener Ready** is true but **Feedback Recently Received** is false, check Synesthesia OSC Output, its destination address, firewall rules, and whether supported scene or global-control output is enabled.
+- Set **Control Address Format** to **Global Addresses**. Dynamic scene-control names and values use `/controls/global/{type}/{position}` routes; scene-specific output cannot populate those controls.
+- **Feedback Recently Received** is a traffic indicator, not a connection state. Synesthesia output is event-driven, so it can become stale while the last received control values remain valid.
+- If **Listener Ready** is true but no feedback ever becomes recent, check Synesthesia OSC Output, its destination address, firewall rules, and whether supported scene or global-control output is enabled.
+- Native media Previous/Next follows Synesthesia's own loaded order and cannot exclude devices. Configured media/live-source buttons use only the exact allowlist in the connection settings. Synesthesia can select media by name or position but does not expose its source list over OSC.
+- Preset Previous/Next cycles `default`, legacy configured names, and presets created through Companion, persisted separately for each scene. Synesthesia's existing per-scene preset catalog and native preset-step operations are not exposed over OSC; Fav 1 through 10 remain the reliable quick access path for existing presets.
 - For two computers, do not use `127.0.0.1` as the destination. It always refers to the sender's own computer.

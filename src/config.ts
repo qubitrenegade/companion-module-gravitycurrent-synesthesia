@@ -11,6 +11,9 @@ export type ModuleConfig = {
 	listenPort: number
 	feedbackValueMode: FeedbackValueMode
 	freshnessTimeoutMs: number
+	mediaSourceNames: string
+	presetNames: string
+	presetCatalog: string
 }
 
 export const DEFAULT_CONFIG: ModuleConfig = {
@@ -21,6 +24,9 @@ export const DEFAULT_CONFIG: ModuleConfig = {
 	listenPort: 7000,
 	feedbackValueMode: 'normalized',
 	freshnessTimeoutMs: 5000,
+	mediaSourceNames: '',
+	presetNames: '',
+	presetCatalog: '{}',
 }
 
 export function normalizeConfig(config: Partial<ModuleConfig>): ModuleConfig {
@@ -32,6 +38,9 @@ export function normalizeConfig(config: Partial<ModuleConfig>): ModuleConfig {
 		listenPort: Number(config.listenPort ?? DEFAULT_CONFIG.listenPort),
 		feedbackValueMode: config.feedbackValueMode === 'raw' ? 'raw' : 'normalized',
 		freshnessTimeoutMs: Number(config.freshnessTimeoutMs ?? DEFAULT_CONFIG.freshnessTimeoutMs),
+		mediaSourceNames: String(config.mediaSourceNames ?? DEFAULT_CONFIG.mediaSourceNames),
+		presetNames: String(config.presetNames ?? DEFAULT_CONFIG.presetNames),
+		presetCatalog: normalizePresetCatalog(config.presetCatalog),
 	}
 }
 
@@ -139,5 +148,69 @@ export function GetConfigFields(): SomeCompanionConfigField[] {
 			default: DEFAULT_CONFIG.freshnessTimeoutMs,
 			isVisibleExpression: '$(options:enableFeedback) == true',
 		},
+		{
+			type: 'textinput',
+			id: 'mediaSourceNames',
+			label: 'Optional quick media/live source names',
+			tooltip:
+				'One exact Synesthesia media/source name per line. These become direct-selection buttons; omit USB devices you never want selected. Native Media Previous/Next is always available but cannot filter sources.',
+			width: 12,
+			multiline: true,
+			default: DEFAULT_CONFIG.mediaSourceNames,
+		},
+		{
+			type: 'static-text',
+			id: 'presetNavigationInfo',
+			width: 12,
+			label: 'Preset navigation',
+			value:
+				'Preset Previous/Next remembers presets created through Companion per scene and preserves that catalog across restarts. Synesthesia does not expose existing preset names or native preset-step routes over OSC; Fav 1 through 10 remain available for existing presets.',
+		},
 	]
+}
+
+export type PresetCatalog = Record<string, string[]>
+
+export function parsePresetCatalog(config: ModuleConfig): PresetCatalog {
+	try {
+		const parsed = JSON.parse(config.presetCatalog) as unknown
+		if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return {}
+		const result: PresetCatalog = {}
+		for (const [scene, names] of Object.entries(parsed)) {
+			if (!Array.isArray(names)) continue
+			result[scene] = names.filter((name): name is string => typeof name === 'string' && name.trim().length > 0)
+		}
+		return result
+	} catch {
+		return {}
+	}
+}
+
+export function serializePresetCatalog(catalog: PresetCatalog): string {
+	return JSON.stringify(catalog)
+}
+
+export function configuredMediaSources(config: ModuleConfig): string[] {
+	return configuredNames(config.mediaSourceNames)
+}
+
+export function configuredPresetNames(config: ModuleConfig): string[] {
+	return configuredNames(config.presetNames)
+}
+
+function configuredNames(value: string): string[] {
+	return value
+		.split(/\r?\n/)
+		.map((name) => name.trim())
+		.filter((name, index, names) => name.length > 0 && names.indexOf(name) === index)
+}
+
+function normalizePresetCatalog(value: unknown): string {
+	if (typeof value !== 'string') return DEFAULT_CONFIG.presetCatalog
+	try {
+		const parsed = JSON.parse(value)
+		return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? JSON.stringify(parsed) : '{}'
+	} catch {
+		return '{}'
+	}
 }

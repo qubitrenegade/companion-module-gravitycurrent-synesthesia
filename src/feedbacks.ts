@@ -1,9 +1,14 @@
-import type { CompanionFeedbackDefinitions } from '@companion-module/base'
+import type { CompanionFeedbackDefinitions, CompanionInputFieldTextInput } from '@companion-module/base'
 import type ModuleInstance from './main.js'
-import { GLOBAL_CONTROL_TYPES, type GlobalControlType } from './state.js'
+import type { SurfaceMode } from './main.js'
+import { GLOBAL_CONTROL_TYPES, type ControlBank, type GlobalControlType } from './state.js'
 
 type SceneOptions = { scene: string; caseSensitive: boolean }
 type ToggleOptions = { position: string; state: boolean }
+type BankLockOptions = { bank: ControlBank; locked: boolean }
+type SurfaceModeOptions = { mode: SurfaceMode }
+type SlotOptions = { slot: string }
+type TransportOptions = { transport: 'playlist' | 'render'; state: boolean }
 type ValueOptions = {
 	type: GlobalControlType
 	position: string
@@ -16,6 +21,13 @@ export type FeedbacksSchema = {
 	current_scene: { type: 'boolean'; options: SceneOptions }
 	global_toggle: { type: 'boolean'; options: ToggleOptions }
 	global_value: { type: 'boolean'; options: ValueOptions }
+	bank_locked: { type: 'boolean'; options: BankLockOptions }
+	surface_mode: { type: 'boolean'; options: SurfaceModeOptions }
+	surface_button_on: { type: 'boolean'; options: SlotOptions }
+	surface_button_locked: { type: 'boolean'; options: SlotOptions }
+	surface_rotary_locked: { type: 'boolean'; options: SlotOptions }
+	transport_state: { type: 'boolean'; options: TransportOptions }
+	preset_created: { type: 'boolean'; options: Record<string, never> }
 	feedback_fresh: { type: 'boolean'; options: Record<string, never> }
 	listener_ready: { type: 'boolean'; options: Record<string, never> }
 }
@@ -105,6 +117,96 @@ export function GetFeedbackDefinitions(self: ModuleInstance): CompanionFeedbackD
 				return actual === undefined ? false : compare(actual, feedback.options.operator, target)
 			},
 		},
+		bank_locked: {
+			name: 'Control Bank: Locally Tracked Lock State',
+			description: 'Matches the bank lock state last sent by this Companion connection.',
+			type: 'boolean',
+			defaultStyle: activeStyle,
+			options: [
+				{
+					id: 'bank',
+					type: 'dropdown',
+					label: 'Bank',
+					default: 'scene',
+					choices: [
+						{ id: 'scene', label: 'Scene controls' },
+						{ id: 'meta', label: 'Meta controls' },
+					],
+				},
+				{ id: 'locked', type: 'checkbox', label: 'Expected locked state', default: true },
+			],
+			callback: (feedback) => self.state.isBankLocked(feedback.options.bank) === feedback.options.locked,
+		},
+		surface_mode: {
+			name: 'Dynamic Surface: Selected Mode',
+			type: 'boolean',
+			defaultStyle: activeStyle,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Mode',
+					default: 'scene',
+					choices: [
+						{ id: 'scene', label: 'Scene' },
+						{ id: 'meta', label: 'Meta' },
+						{ id: 'media', label: 'Media' },
+						{ id: 'favs', label: 'Favslots' },
+					],
+				},
+			],
+			callback: (feedback) => self.isSurfaceMode(feedback.options.mode),
+		},
+		surface_button_on: {
+			name: 'Dynamic Surface: Button On/Selected',
+			type: 'boolean',
+			defaultStyle: activeStyle,
+			options: [slotField()],
+			callback: (feedback) => self.isSurfaceButtonOn(validSlot(feedback.options.slot, 18)),
+		},
+		surface_button_locked: {
+			name: 'Dynamic Surface: Button Represents Locked Group',
+			type: 'boolean',
+			defaultStyle: { bgcolor: 0xcc0000, color: 0xffffff },
+			options: [slotField()],
+			callback: (feedback) => self.isSurfaceButtonLocked(validSlot(feedback.options.slot, 18)),
+		},
+		surface_rotary_locked: {
+			name: 'Dynamic Surface: Rotary Control Locked',
+			type: 'boolean',
+			defaultStyle: { bgcolor: 0xcc0000, color: 0xffffff },
+			options: [slotField()],
+			callback: (feedback) => self.isSurfaceRotaryLocked(validSlot(feedback.options.slot, 6)),
+		},
+		transport_state: {
+			name: 'Transport: Locally Tracked State',
+			type: 'boolean',
+			defaultStyle: activeStyle,
+			options: [
+				{
+					id: 'transport',
+					type: 'dropdown',
+					label: 'Transport',
+					default: 'playlist',
+					choices: [
+						{ id: 'playlist', label: 'Playlist playing' },
+						{ id: 'render', label: 'Rendering enabled' },
+					],
+				},
+				{ id: 'state', type: 'checkbox', label: 'Expected enabled state', default: true },
+			],
+			callback: (feedback) => {
+				const state = feedback.options.transport === 'playlist' ? self.isPlaylistPlaying() : self.isRenderingEnabled()
+				return state === feedback.options.state
+			},
+		},
+		preset_created: {
+			name: 'Preset: Creation Command Sent During Hold',
+			type: 'boolean',
+			defaultStyle: activeStyle,
+			options: [],
+			callback: () => self.isPresetCreated(),
+		},
 		feedback_fresh: {
 			name: 'OSC Feedback: Recently Received',
 			description: 'True only after a supported Synesthesia state message arrived within the configured timeout.',
@@ -131,6 +233,15 @@ export function UpdateFeedbacks(self: ModuleInstance): void {
 function validPosition(value: unknown): number | undefined {
 	const position = Number(value)
 	return Number.isInteger(position) && position >= 1 && position <= 16 ? position : undefined
+}
+
+function validSlot(value: unknown, maximum: number): number {
+	const slot = Number(value)
+	return Number.isInteger(slot) && slot >= 1 && slot <= maximum ? slot : 0
+}
+
+function slotField(): CompanionInputFieldTextInput<'slot'> {
+	return { id: 'slot', type: 'textinput' as const, label: 'Slot', default: '1', regex: '/^\\d+$/' }
 }
 
 function compare(actual: number, operator: ValueOptions['operator'], target: number): boolean {

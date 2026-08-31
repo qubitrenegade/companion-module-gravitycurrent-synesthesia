@@ -36,10 +36,21 @@ test('preset catalog includes transport, bank safety, rendering, and state contr
 		'scene_unlock',
 		'meta_undo',
 		'meta_unlock',
+		'scene_lock_toggle',
+		'meta_lock_toggle',
+		'meta_brightness_rotary',
+		'preset_previous_configured',
+		'preset_next_configured',
+		'osc_last_address',
 		'listener_status',
 		'feedback_status',
 	]) {
 		assert.ok(captured.presets[id], `missing preset ${id}`)
 	}
 	assert.deepEqual(captured.presets.create_preset.steps[0][1000].options, { runWhileHeld: true })
+	assert.equal(captured.presets.global_bang.steps[0].down[0].options.values, '1')
+	assert.equal(captured.presets.global_bang.steps[0].up[0].options.values, '0')
+	for (let position = 1; position <= 10; position++) {
+		assert.ok(captured.presets[`favslot_${position}`], `missing favslot ${position}`)
+	}
 })

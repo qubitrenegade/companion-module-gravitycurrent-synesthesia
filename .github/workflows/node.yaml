@@ -73,6 +73,6 @@ jobs:
           CI: true
       - name: Build Companion package
         run: |
-          yarn package
+          yarn package --prerelease
         env:
           CI: true

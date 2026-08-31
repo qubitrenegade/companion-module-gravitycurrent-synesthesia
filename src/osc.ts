@@ -3,6 +3,7 @@ import type { FeedbackValueMode } from './config.js'
 import {
 	GLOBAL_CONTROL_POSITIONS,
 	GLOBAL_CONTROL_TYPES,
+	metaControlDefinition,
 	parseGlobalValue,
 	type GlobalControlType,
 	SynesthesiaState,
@@ -102,6 +103,7 @@ export class InboundOscProcessor {
 	}
 
 	process(message: IncomingOscMessage): boolean {
+		this.state.markOscReceived(message.address)
 		if (!message.address.startsWith('/')) {
 			this.logUnsupported('<malformed-address>')
 			return false
@@ -131,6 +133,38 @@ export class InboundOscProcessor {
 			return true
 		}
 
+		const componentMatch = /^\/controls\/global\/(xy|color)\/(\d+)\/(x|y|r|g|b)(\/raw)?$/.exec(message.address)
+		if (componentMatch) {
+			const type = componentMatch[1] as 'xy' | 'color'
+			const position = Number(componentMatch[2])
+			const component = componentMatch[3]
+			const isRaw = componentMatch[4] === '/raw'
+			this.state.observeFeedbackMode(isRaw ? 'raw' : 'normalized', this.valueMode)
+			const componentMatchesType =
+				(type === 'xy' && (component === 'x' || component === 'y')) ||
+				(type === 'color' && (component === 'r' || component === 'g' || component === 'b'))
+			const value = unwrapOscValue(message.args[0])
+			const safeRawNormalized =
+				this.valueMode === 'normalized' &&
+				isRaw &&
+				type === 'color' &&
+				typeof value === 'number' &&
+				value >= 0 &&
+				value <= 1
+			if (
+				position < 1 ||
+				position > GLOBAL_CONTROL_POSITIONS ||
+				!componentMatchesType ||
+				typeof value !== 'number' ||
+				!Number.isFinite(value) ||
+				((this.valueMode === 'raw') !== isRaw && !safeRawNormalized)
+			)
+				return false
+			this.state.setNumericComponent(type, position, component, value)
+			this.state.markSupportedFeedbackReceived()
+			return true
+		}
+
 		const valueMatch = /^\/controls\/global\/(slider|knob|toggle|bang|xy|color|dropdown)\/(\d+)(\/raw)?$/.exec(
 			message.address,
 		)
@@ -138,13 +172,90 @@ export class InboundOscProcessor {
 			const type = valueMatch[1] as GlobalControlType
 			const position = Number(valueMatch[2])
 			const isRaw = valueMatch[3] === '/raw'
-			if (position < 1 || position > GLOBAL_CONTROL_POSITIONS || (this.valueMode === 'raw') !== isRaw) return false
+			this.state.observeFeedbackMode(isRaw ? 'raw' : 'normalized', this.valueMode)
+			const rawNumbers = message.args.map(unwrapOscValue)
+			const safeRawNormalized =
+				this.valueMode === 'normalized' &&
+				isRaw &&
+				(type === 'toggle' || type === 'bang' || type === 'color') &&
+				rawNumbers.every((value) => typeof value === 'number' && value >= 0 && value <= 1)
+			if (
+				position < 1 ||
+				position > GLOBAL_CONTROL_POSITIONS ||
+				((this.valueMode === 'raw') !== isRaw && !safeRawNormalized)
+			)
+				return false
 			const value = parseGlobalValue(type, message.args)
 			if (!value) {
 				this.logUnsupported(message.address)
 				return false
 			}
 			this.state.setControlValue(type, position, value)
+			this.state.markSupportedFeedbackReceived()
+			return true
+		}
+
+		const metaComponentMatch = /^\/controls\/meta\/([a-z0-9_]+)\/(x|y|r|g|b)(\/raw)?$/.exec(message.address)
+		if (metaComponentMatch) {
+			const name = metaComponentMatch[1]
+			const component = metaComponentMatch[2]
+			const isRaw = metaComponentMatch[3] === '/raw'
+			const value = unwrapOscValue(message.args[0])
+			const declaredKind = metaControlDefinition(name)?.kind
+			const componentMatchesType =
+				((component === 'x' || component === 'y') && declaredKind === undefined) ||
+				((component === 'r' || component === 'g' || component === 'b') &&
+					(declaredKind === undefined || declaredKind === 'color'))
+			this.state.observeFeedbackMode(isRaw ? 'raw' : 'normalized', this.valueMode)
+			const safeRawNormalized =
+				this.valueMode === 'normalized' &&
+				isRaw &&
+				(component === 'r' || component === 'g' || component === 'b') &&
+				typeof value === 'number' &&
+				value >= 0 &&
+				value <= 1
+			if (
+				!componentMatchesType ||
+				typeof value !== 'number' ||
+				!Number.isFinite(value) ||
+				((this.valueMode === 'raw') !== isRaw && !safeRawNormalized)
+			)
+				return false
+			this.state.setMetaNumericComponent(name, component, value)
+			this.state.markSupportedFeedbackReceived()
+			return true
+		}
+
+		const metaMatch = /^\/controls\/meta\/([a-z0-9_]+)(\/raw)?$/.exec(message.address)
+		if (metaMatch) {
+			const isRaw = metaMatch[2] === '/raw'
+			this.state.observeFeedbackMode(isRaw ? 'raw' : 'normalized', this.valueMode)
+			const declaredKind = metaControlDefinition(metaMatch[1])?.kind
+			const rawNumbers = message.args.map(unwrapOscValue)
+			const safeRawNormalized =
+				this.valueMode === 'normalized' &&
+				isRaw &&
+				(declaredKind === 'toggle' || declaredKind === 'bang' || declaredKind === 'color') &&
+				rawNumbers.every((value) => typeof value === 'number' && value >= 0 && value <= 1)
+			if ((this.valueMode === 'raw') !== isRaw && !safeRawNormalized) return false
+			const numbers = message.args.map(unwrapOscValue)
+			if (numbers.some((value) => typeof value !== 'number' || !Number.isFinite(value))) {
+				this.logUnsupported(message.address)
+				return false
+			}
+			const value =
+				numbers.length === 1
+					? { kind: 'scalar' as const, value: numbers[0] as number }
+					: numbers.length === 2
+						? { kind: 'xy' as const, x: numbers[0] as number, y: numbers[1] as number }
+						: numbers.length === 3
+							? { kind: 'color' as const, r: numbers[0] as number, g: numbers[1] as number, b: numbers[2] as number }
+							: undefined
+			if (!value) {
+				this.logUnsupported(message.address)
+				return false
+			}
+			this.state.setMetaControlValue(metaMatch[1], value)
 			this.state.markSupportedFeedbackReceived()
 			return true
 		}

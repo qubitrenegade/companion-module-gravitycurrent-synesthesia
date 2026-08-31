@@ -4,6 +4,40 @@ Bitfocus Companion connection module for controlling Synesthesia Pro and receivi
 
 Synesthesia's OSC API is documented at <https://synesthesia.live/docs/manual/osc.html>. OSC requires a Synesthesia Pro license and the API is still evolving.
 
+## Features
+
+- Typed Companion actions for playlists, favslots, scenes, presets, media, controls, banks, groups, rendering, and locks.
+- Optional OSC feedback for scene names, active global-control names, normalized values, toggles, XY controls, and RGB colors.
+- A dynamic Stream Deck Plus performance surface with Scene, Meta, Media, and Favslots modes.
+- Shared paging that keeps one-page button groups visible while additional rotary controls are paged.
+- Favslot access for positions 1 through 10, with overlapping pages for fast navigation.
+- RGB and XY component selection from the rotary LCD. Dial rotation adjusts the selected component and dial press restores the control default.
+- Preset creation with generated `YY-MM-DD HH:MM:SS - Companion` names and per-scene memory for presets created through Companion.
+
+## Requirements
+
+- Bitfocus Companion with the Node 22 module runtime.
+- Synesthesia Pro with OSC Input enabled.
+- Synesthesia OSC Output enabled for state-aware controls.
+- **Global Addresses** and **Output Normalized Values** selected in Synesthesia for the dynamic Scene surface.
+
+See [the Companion help file](companion/HELP.md) for the same-computer port layout, LAN setup, available controls, and troubleshooting.
+
+## Installation
+
+Until this module is available through Companion's normal module distribution, build or download a Companion module package and upload it from Companion's Modules page. After uploading a new package, edit the connection and explicitly select the new module version. Importing a Companion configuration does not automatically switch an existing connection to the newly uploaded version.
+
+## Known Synesthesia API limitations
+
+- OSC is UDP and has no acknowledgement or persistent connection state.
+- The documented OSC API does not enumerate scenes, existing presets, favslot names, playlists, or media/live sources.
+- Native media Previous and Next follows Synesthesia's own source order. Automatic device exclusion is not possible without source enumeration from Synesthesia.
+- Existing per-scene presets cannot be stepped generically through the documented API. Favslots and exact preset names remain the reliable external entry points.
+- Synesthesia output is event-driven, so feedback can become stale while the most recently received values remain usable.
+- Synesthesia does not expose a native atomic global undo or redo. The module's Global Undo sends one undo command to Scene and then one to Meta.
+
+Release-specific changes and known issues are tracked in [CHANGELOG.md](CHANGELOG.md). Contribution setup and pull request expectations are in [CONTRIBUTING.md](CONTRIBUTING.md).
+
 ## Architecture
 
 - `src/actions.ts` defines typed product actions and emits explicit OSC integer, float, and string arguments through Companion's OSC sender.
@@ -42,15 +76,24 @@ yarn install
 yarn build
 yarn lint
 yarn test
-yarn package
+yarn package --prerelease
 ```
 
 `yarn test` builds the TypeScript output and runs the Node test suite. Tests use in-memory action, state, timer, and UDP server boundaries, so they do not require Synesthesia or open network ports. They cover representative outgoing routes and OSC types, scene and global state parsing, multidimensional formatting, empty-name clearing, malformed input, burst coalescing, freshness deadlines, and listener replacement.
 
 The GitHub Actions workflow runs build and typechecking, lint, tests, and the Companion package build on Node 22.
 
+Before opening a pull request, run:
+
+```sh
+yarn build
+yarn lint
+yarn test
+yarn companion-module-check
+```
+
 ## Protocol scope
 
 The module does not implement discovery or request-response behavior because Synesthesia documents OSC as one-way UDP input and output. It does not enumerate installed scenes or presets because the documented API does not expose enumeration. Audio-variable output is intentionally ignored: it is high-volume and is not needed for the control-surface state model.
 
-User setup, the suggested port layout, rotary examples, and troubleshooting are in `companion/HELP.md`.
+User setup, the suggested port layout, rotary examples, and troubleshooting are in [companion/HELP.md](companion/HELP.md).

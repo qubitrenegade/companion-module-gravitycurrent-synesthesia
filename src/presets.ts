@@ -19,6 +19,7 @@ const positions = Array.from({ length: 16 }, (_, index) => ({
 	value: String(index + 1),
 }))
 type PresetDefinition = NonNullable<CompanionPresetDefinitions<ModuleSchema>[string]>
+type SimplePresetDefinition = Extract<PresetDefinition, { type: 'simple' }>
 
 export function UpdatePresets(self: ModuleInstance): void {
 	const structure: CompanionPresetSection<ModuleSchema>[] = [
@@ -51,7 +52,18 @@ export function UpdatePresets(self: ModuleInstance): void {
 					id: 'favslots',
 					name: 'Favslots',
 					type: 'simple',
-					presets: ['favslot_1', 'favslot_2', 'favslot_3', 'favslot_4'],
+					presets: [
+						'favslot_1',
+						'favslot_2',
+						'favslot_3',
+						'favslot_4',
+						'favslot_5',
+						'favslot_6',
+						'favslot_7',
+						'favslot_8',
+						'favslot_9',
+						'favslot_10',
+					],
 				},
 				{
 					id: 'rendering',
@@ -77,8 +89,12 @@ export function UpdatePresets(self: ModuleInstance): void {
 						'launch_preset_scene',
 						'launch_preset_meta',
 						'launch_preset_media',
+						'preset_previous_configured',
+						'preset_next_configured',
 						'select_media_name',
 						'select_media_position',
+						'media_previous_configured',
+						'media_next_configured',
 						'create_preset',
 					],
 				},
@@ -92,13 +108,13 @@ export function UpdatePresets(self: ModuleInstance): void {
 					id: 'scene-bank',
 					name: 'Scene Controls',
 					type: 'simple',
-					presets: ['scene_default', 'scene_random', 'scene_undo', 'scene_lock', 'scene_unlock'],
+					presets: ['scene_default', 'scene_random', 'scene_undo', 'scene_lock_toggle'],
 				},
 				{
 					id: 'meta-bank',
 					name: 'Meta Controls',
 					type: 'simple',
-					presets: ['meta_default', 'meta_random', 'meta_undo', 'meta_lock', 'meta_unlock'],
+					presets: ['meta_default', 'meta_random', 'meta_undo', 'meta_lock_toggle'],
 				},
 				{
 					id: 'brightness',
@@ -113,6 +129,12 @@ export function UpdatePresets(self: ModuleInstance): void {
 						{ name: 'Brightness 75%', value: '0.75' },
 						{ name: 'Brightness 100%', value: '1' },
 					],
+				},
+				{
+					id: 'brightness-rotary',
+					name: 'Meta Brightness Rotary',
+					type: 'simple',
+					presets: ['meta_brightness_rotary'],
 				},
 			],
 		},
@@ -141,7 +163,7 @@ export function UpdatePresets(self: ModuleInstance): void {
 					id: 'state-status',
 					name: 'OSC State',
 					type: 'simple',
-					presets: ['current_scene', 'listener_status', 'feedback_status', 'current_scene_match'],
+					presets: ['current_scene', 'listener_status', 'feedback_status', 'osc_last_address', 'current_scene_match'],
 				},
 			],
 		},
@@ -178,6 +200,18 @@ export function UpdatePresets(self: ModuleInstance): void {
 		launch_preset_scene: presetLaunchButton('Launch Preset: Scene Controls', 'scene'),
 		launch_preset_meta: presetLaunchButton('Launch Preset: Meta Controls', 'meta'),
 		launch_preset_media: presetLaunchButton('Launch Preset: Media', 'media'),
+		preset_previous_configured: button(
+			'Previous Configured/Remembered Preset',
+			'PRESET\nPREVIOUS',
+			purple,
+			action('cycle_configured_preset', { direction: 'previous', channel: 'all' }),
+		),
+		preset_next_configured: button(
+			'Next Configured/Remembered Preset',
+			'PRESET\nNEXT',
+			purple,
+			action('cycle_configured_preset', { direction: 'next', channel: 'all' }),
+		),
 		select_media_name: button(
 			'Select Media by Name',
 			'MEDIA\nNAME',
@@ -190,6 +224,18 @@ export function UpdatePresets(self: ModuleInstance): void {
 			purple,
 			action('select_media', { mode: 'position', name: '', position: '1' }),
 		),
+		media_previous_configured: button(
+			'Previous Configured Media/Live Source',
+			'MEDIA\nPREVIOUS',
+			purple,
+			action('cycle_configured_media', { direction: 'previous' }),
+		),
+		media_next_configured: button(
+			'Next Configured Media/Live Source',
+			'MEDIA\nNEXT',
+			purple,
+			action('cycle_configured_media', { direction: 'next' }),
+		),
 		create_preset: longPressButton(
 			'Create Preset from Current State',
 			'HOLD TO\nCREATE PRESET',
@@ -201,17 +247,24 @@ export function UpdatePresets(self: ModuleInstance): void {
 		scene_undo: bankButton('Scene Controls Undo', 'SCENE\nUNDO', 'scene', 'undo'),
 		scene_lock: bankButton('Lock Scene Controls', 'SCENE\nLOCK', 'scene', 'lock', true),
 		scene_unlock: bankButton('Unlock Scene Controls', 'SCENE\nUNLOCK', 'scene', 'lock', false),
+		scene_lock_toggle: bankLockButton('scene'),
 		meta_default: bankButton('Meta Controls Default', 'META\nDEFAULT', 'meta', 'default'),
 		meta_random: bankButton('Meta Controls Random', 'META\nRANDOM', 'meta', 'random'),
 		meta_undo: bankButton('Meta Controls Undo', 'META\nUNDO', 'meta', 'undo'),
 		meta_lock: bankButton('Lock Meta Controls', 'META\nLOCK', 'meta', 'lock', true),
 		meta_unlock: bankButton('Unlock Meta Controls', 'META\nUNLOCK', 'meta', 'lock', false),
+		meta_lock_toggle: bankLockButton('meta'),
 		meta_brightness: templatedButton(
 			'Meta Brightness',
 			'BRIGHTNESS\n$(local:value)',
 			purple,
 			'value',
 			action('set_meta_control', { name: 'brightness', values: expression('$(local:value)'), raw: false }),
+		),
+		meta_brightness_rotary: metaRotary(
+			'Meta Brightness Rotary',
+			'BRIGHTNESS\n$(Synesthesia:meta_brightness_value)',
+			'brightness',
 		),
 		global_slider_1_rotary: rotary(
 			'Global Slider 1 Rotary with Dynamic LCD',
@@ -235,31 +288,23 @@ export function UpdatePresets(self: ModuleInstance): void {
 				),
 			],
 		},
-		global_bang: templatedButton(
-			'Global Bang',
-			'BANG\n$(local:position)',
-			purple,
-			'position',
-			action('set_global_control', {
-				type: 'bang',
-				position: expression('$(local:position)'),
-				values: '1',
-				raw: false,
-			}),
-		),
+		global_bang: bangButton(),
 		current_scene: display('Current Scene', 'SCENE\n$(Synesthesia:current_scene)', blue),
 		listener_status: statusButton(
 			'OSC Feedback Listener Status',
 			'OSC LISTENER\nCLOSED',
 			'OSC LISTENER\nREADY',
 			'listener_ready',
+			'socket_listening',
 		),
 		feedback_status: statusButton(
 			'OSC Feedback Freshness',
 			'OSC FEEDBACK\nSTALE',
 			'OSC FEEDBACK\nFRESH',
 			'feedback_fresh',
+			'feedback_fresh',
 		),
+		osc_last_address: display('Last OSC Address Received', 'OSC LAST\n$(Synesthesia:osc_last_address)', blue),
 		current_scene_match: {
 			type: 'simple',
 			name: 'Current Scene Match',
@@ -276,7 +321,7 @@ export function UpdatePresets(self: ModuleInstance): void {
 		},
 	}
 
-	for (let position = 1; position <= 4; position++) {
+	for (let position = 1; position <= 10; position++) {
 		presets[`favslot_${position}`] = button(
 			`Favslot ${position}`,
 			`FAV\n${position}`,
@@ -297,7 +342,7 @@ function button(
 	text: string,
 	bgcolor: number,
 	presetAction: CompanionPresetAction<ActionsSchema>,
-): PresetDefinition {
+): SimplePresetDefinition {
 	return { type: 'simple', name, style: style(text, bgcolor), steps: [{ down: [presetAction], up: [] }], feedbacks: [] }
 }
 
@@ -307,7 +352,7 @@ function templatedButton(
 	bgcolor: number,
 	variableName: string,
 	presetAction: CompanionPresetAction<ActionsSchema>,
-): PresetDefinition {
+): SimplePresetDefinition {
 	return { ...button(name, text, bgcolor, presetAction), localVariables: [localVariable(variableName, '1')] }
 }
 
@@ -316,7 +361,7 @@ function longPressButton(
 	text: string,
 	bgcolor: number,
 	presetAction: CompanionPresetAction<ActionsSchema>,
-): PresetDefinition {
+): SimplePresetDefinition {
 	return {
 		type: 'simple',
 		name,
@@ -370,6 +415,53 @@ function templatedRotary(name: string, text: string, type: 'slider' | 'knob') {
 	}
 }
 
+function metaRotary(name: string, text: string, controlName: string): SimplePresetDefinition {
+	return {
+		type: 'simple',
+		name,
+		keywords: ['rotary', 'dial', 'encoder', 'meta'],
+		style: style(text, blue),
+		steps: [
+			{
+				down: [],
+				up: [],
+				rotate_left: [action('adjust_meta_scalar', { name: controlName, delta: '-0.05' })],
+				rotate_right: [action('adjust_meta_scalar', { name: controlName, delta: '0.05' })],
+			},
+		],
+		feedbacks: [],
+	}
+}
+
+function bangButton(): SimplePresetDefinition {
+	const position = expression('$(local:position)')
+	return {
+		type: 'simple',
+		name: 'Global Bang',
+		localVariables: [localVariable('position', '1')],
+		style: style('BANG\n$(local:position)', purple),
+		steps: [
+			{
+				down: [action('set_global_control', { type: 'bang', position, values: '1', raw: false })],
+				up: [action('set_global_control', { type: 'bang', position, values: '0', raw: false })],
+			},
+		],
+		feedbacks: [],
+	}
+}
+
+function bankLockButton(bank: 'scene' | 'meta'): SimplePresetDefinition {
+	const label = bank.toUpperCase()
+	const variable = `${bank}_bank_locked`
+	return {
+		type: 'simple',
+		name: `Toggle ${label} Control Bank Lock`,
+		style: expressionStyle(`bool($(Synesthesia:${variable})) ? '${label}\\nLOCKED' : '${label}\\nUNLOCKED'`, green),
+		steps: [{ down: [action('toggle_bank_lock', { bank })], up: [] }],
+		feedbacks: [feedback('bank_locked', { bank, locked: true }, { bgcolor: red, color: white })],
+	}
+}
+
 function display(name: string, text: string, bgcolor: number): PresetDefinition {
 	return { type: 'simple', name, style: style(text, bgcolor), steps: [], feedbacks: [] }
 }
@@ -379,18 +471,26 @@ function statusButton(
 	inactiveText: string,
 	activeText: string,
 	feedbackId: 'listener_ready' | 'feedback_fresh',
+	variableId: 'socket_listening' | 'feedback_fresh',
 ): PresetDefinition {
 	return {
 		type: 'simple',
 		name,
-		style: style(inactiveText, red),
+		style: expressionStyle(
+			`bool($(Synesthesia:${variableId})) ? '${activeText.replace('\n', '\\n')}' : '${inactiveText.replace('\n', '\\n')}'`,
+			red,
+		),
 		steps: [],
-		feedbacks: [feedback(feedbackId, {}, { text: activeText, bgcolor: green, color: white })],
+		feedbacks: [feedback(feedbackId, {}, { bgcolor: green, color: white })],
 	}
 }
 
 function style(text: string, bgcolor: number) {
 	return { text, size: 'auto' as const, color: white, bgcolor, show_topbar: false }
+}
+
+function expressionStyle(text: string, bgcolor: number) {
+	return { ...style(text, bgcolor), textExpression: true }
 }
 
 function localVariable(variableName: string, startupValue: string) {

@@ -5,7 +5,8 @@ import type {
 	OSCMetaArgument,
 } from '@companion-module/base'
 import type ModuleInstance from './main.js'
-import { GLOBAL_CONTROL_TYPES, type GlobalControlType } from './state.js'
+import type { SurfaceMode } from './main.js'
+import { GLOBAL_CONTROL_TYPES, type ControlBank, type GlobalControlType } from './state.js'
 
 type EmptyOptions = Record<string, never>
 type PlayOptions = { shouldPlay: boolean }
@@ -18,6 +19,17 @@ type MediaOptions = { mode: 'name' | 'position'; name: string; position: string 
 type ControlOptions = { name: string; values: string; raw: boolean }
 type GlobalControlOptions = { type: GlobalControlType; position: string; values: string; raw: boolean }
 type AdjustGlobalOptions = { type: 'slider' | 'knob'; position: string; delta: string }
+type AdjustMetaOptions = { name: string; delta: string }
+type CycleMediaOptions = { direction: 'previous' | 'next' }
+type CyclePresetOptions = { direction: 'previous' | 'next'; channel: 'all' | 'scene' | 'meta' | 'media' }
+type BankOptions = { bank: ControlBank }
+type SurfaceModeOptions = { mode: SurfaceMode }
+type SurfacePageOptions = { direction: 'previous' | 'next' }
+type SurfaceButtonOptions = { slot: string; pressed: boolean }
+type SurfaceRotaryOptions = { slot: string; delta: string }
+type SurfaceSlotOptions = { slot: string }
+type ActiveBankOperationOptions = { operation: 'default' | 'undo' | 'random' }
+type AllBankOperationOptions = { operation: 'default' | 'undo' | 'random' }
 type ControlOperationOptions = {
 	scope: 'scene' | 'meta' | 'global'
 	name: string
@@ -51,15 +63,30 @@ export type ActionsSchema = {
 	launch_scene: { options: SceneOptions }
 	launch_preset: { options: PresetOptions }
 	create_preset: { options: NameOptions }
+	cycle_configured_preset: { options: CyclePresetOptions }
 	select_media: { options: MediaOptions }
+	cycle_configured_media: { options: CycleMediaOptions }
 	set_meta_control: { options: ControlOptions }
 	set_scene_control: { options: ControlOptions }
 	set_global_control: { options: GlobalControlOptions }
 	adjust_global_scalar: { options: AdjustGlobalOptions }
+	adjust_meta_scalar: { options: AdjustMetaOptions }
 	toggle_global_toggle: { options: PositionOptions }
+	toggle_bank_lock: { options: BankOptions }
 	control_operation: { options: ControlOperationOptions }
 	bank_operation: { options: BankOperationOptions }
 	group_operation: { options: GroupOperationOptions }
+	surface_set_mode: { options: SurfaceModeOptions }
+	surface_change_page: { options: SurfacePageOptions }
+	surface_button: { options: SurfaceButtonOptions }
+	surface_adjust_rotary: { options: SurfaceRotaryOptions }
+	surface_reset_rotary: { options: SurfaceSlotOptions }
+	surface_touch_rotary: { options: SurfaceSlotOptions }
+	surface_active_bank_operation: { options: ActiveBankOperationOptions }
+	surface_all_bank_operation: { options: AllBankOperationOptions }
+	surface_toggle_playlist: { options: EmptyOptions }
+	surface_toggle_render: { options: EmptyOptions }
+	preset_clear_created: { options: EmptyOptions }
 }
 
 const globalTypeChoices = GLOBAL_CONTROL_TYPES.map((type) => ({ id: type, label: capitalize(type) }))
@@ -132,8 +159,47 @@ export function GetActionDefinitions(self: ModuleInstance): CompanionActionDefin
 			name: 'Preset: Create from Current State',
 			options: [textField('name', 'Preset name (optional)', '')],
 			callback: (event) => {
-				const name = String(event.options.name).trim()
-				return send(self, '/presets/new', name ? [stringArg(name)] : [])
+				const name = String(event.options.name).trim() || self.generatePresetName()
+				self.rememberPreset(name)
+				send(self, '/presets/new', [stringArg(name)])
+				self.markPresetCreated()
+			},
+		},
+		cycle_configured_preset: {
+			name: 'Preset: Previous/Next Learned for Current Scene',
+			description:
+				'Cycle default, legacy configured names, and presets created through Companion, persisted separately for the current scene. Existing Synesthesia preset names are not exposed over OSC.',
+			options: [
+				{
+					id: 'direction',
+					type: 'dropdown',
+					label: 'Direction',
+					default: 'next',
+					choices: [
+						{ id: 'previous', label: 'Previous' },
+						{ id: 'next', label: 'Next' },
+					],
+				},
+				{
+					id: 'channel',
+					type: 'dropdown',
+					label: 'Preset channel',
+					default: 'all',
+					choices: [
+						{ id: 'all', label: 'All channels' },
+						{ id: 'scene', label: 'Scene controls only' },
+						{ id: 'meta', label: 'Meta controls only' },
+						{ id: 'media', label: 'Media only' },
+					],
+				},
+			],
+			callback: (event) => {
+				const suffix = event.options.channel === 'all' ? '' : `/${event.options.channel}`
+				const name = self.cycleConfiguredPreset(event.options.direction)
+				if (name.toLowerCase() === 'default') {
+					return send(self, '/controls/banks/scene/default')
+				}
+				return send(self, `/presets${suffix}`, [stringArg(name)])
 			},
 		},
 		select_media: {
@@ -159,6 +225,24 @@ export function GetActionDefinitions(self: ModuleInstance): CompanionActionDefin
 				event.options.mode === 'position'
 					? send(self, '/media/position', [integer(parseInteger(event.options.position, 'position', 1))])
 					: send(self, '/media/name', [stringArg(requireText(event.options.name, 'media name'))]),
+		},
+		cycle_configured_media: {
+			name: 'Media: Previous/Next Configured Source',
+			description:
+				'Cycle only through the allowed media/live source names configured on this connection. Omitted sources are never selected.',
+			options: [
+				{
+					id: 'direction',
+					type: 'dropdown',
+					label: 'Direction',
+					default: 'next',
+					choices: [
+						{ id: 'previous', label: 'Previous' },
+						{ id: 'next', label: 'Next' },
+					],
+				},
+			],
+			callback: (event) => send(self, '/media/name', [stringArg(self.cycleConfiguredMedia(event.options.direction))]),
 		},
 		set_meta_control: controlAction(self, 'Meta Control: Set Value', 'meta'),
 		set_scene_control: controlAction(self, 'Scene Control: Set Value', 'scene'),
@@ -197,14 +281,33 @@ export function GetActionDefinitions(self: ModuleInstance): CompanionActionDefin
 			],
 			callback: (event) => {
 				const position = parseInteger(event.options.position, 'position', 1, 16)
-				if (self.config.feedbackValueMode !== 'normalized' || !self.state.isFeedbackFresh()) {
-					throw new Error('Relative adjustment requires fresh normalized OSC feedback')
+				if (self.config.feedbackValueMode !== 'normalized') {
+					throw new Error('Relative adjustment requires normalized OSC feedback')
 				}
-				const current = self.state.getNumericValue(event.options.type, position)
-				if (current === undefined) throw new Error('No feedback value has been received for this global control')
+				const current = self.state.getNumericValue(event.options.type, position) ?? 0.5
 				const delta = parseNumber(event.options.delta, 'adjustment')
 				const next = Math.min(1, Math.max(0, current + delta))
-				return send(self, `/controls/global/${event.options.type}/${position}`, [floatArg(next)])
+				send(self, `/controls/global/${event.options.type}/${position}`, [floatArg(next)])
+				self.state.setControlValue(event.options.type, position, { kind: 'scalar', value: next })
+			},
+		},
+		adjust_meta_scalar: {
+			name: 'Meta Scalar: Adjust Relative',
+			description: 'Adjust a fixed meta slider from its most recently received normalized value.',
+			options: [
+				textField('name', 'Meta control name', 'brightness'),
+				textField('delta', 'Normalized adjustment', '0.05'),
+			],
+			callback: (event) => {
+				if (self.config.feedbackValueMode !== 'normalized') {
+					throw new Error('Relative adjustment requires normalized OSC feedback')
+				}
+				const name = normalizeControlName(event.options.name)
+				const current = self.state.getMetaScalarValue(name) ?? 0.5
+				const delta = parseNumber(event.options.delta, 'adjustment')
+				const next = Math.min(1, Math.max(0, current + delta))
+				send(self, `/controls/meta/${name}`, [floatArg(next)])
+				self.state.setMetaScalarValue(name, next)
 			},
 		},
 		toggle_global_toggle: {
@@ -213,12 +316,33 @@ export function GetActionDefinitions(self: ModuleInstance): CompanionActionDefin
 			options: [positionField('position', 'Position')],
 			callback: (event) => {
 				const position = parseInteger(event.options.position, 'position', 1, 16)
-				if (self.config.feedbackValueMode !== 'normalized' || !self.state.isFeedbackFresh()) {
-					throw new Error('Toggle requires fresh normalized OSC feedback')
-				}
-				const current = self.state.getNumericValue('toggle', position)
-				if (current === undefined) throw new Error('No feedback value has been received for this global toggle')
-				return send(self, `/controls/global/toggle/${position}`, [floatArg(current === 0 ? 1 : 0)])
+				if (self.config.feedbackValueMode !== 'normalized') throw new Error('Toggle requires normalized OSC feedback')
+				const current = self.state.getNumericValue('toggle', position) ?? 0
+				const next = current === 0
+				send(self, `/controls/global/toggle/${position}`, [floatArg(next ? 1 : 0)])
+				self.state.setControlValue('toggle', position, { kind: 'toggle', value: next })
+			},
+		},
+		toggle_bank_lock: {
+			name: 'Control Bank: Toggle Locally Tracked Lock',
+			description:
+				'Synesthesia does not output bank lock state. This toggles the state last sent by this Companion connection.',
+			options: [
+				{
+					id: 'bank',
+					type: 'dropdown',
+					label: 'Bank',
+					default: 'scene',
+					choices: [
+						{ id: 'scene', label: 'Scene controls' },
+						{ id: 'meta', label: 'Meta controls' },
+					],
+				},
+			],
+			callback: (event) => {
+				const locked = !self.state.isBankLocked(event.options.bank)
+				send(self, `/controls/banks/${event.options.bank}/lock`, [floatArg(locked ? 1 : 0)])
+				self.state.setBankLocked(event.options.bank, locked)
 			},
 		},
 		control_operation: {
@@ -310,12 +434,14 @@ export function GetActionDefinitions(self: ModuleInstance): CompanionActionDefin
 					isVisibleExpression: '$(options:operation) == "lock"',
 				},
 			],
-			callback: (event) =>
+			callback: (event) => {
 				send(
 					self,
 					`/controls/banks/${event.options.bank}/${event.options.operation}`,
 					event.options.operation === 'lock' ? [floatArg(event.options.locked ? 1 : 0)] : [],
-				),
+				)
+				if (event.options.operation === 'lock') self.state.setBankLocked(event.options.bank, event.options.locked)
+			},
 		},
 		group_operation: {
 			name: 'Control Group: Default, Random, or Lock',
@@ -362,6 +488,106 @@ export function GetActionDefinitions(self: ModuleInstance): CompanionActionDefin
 				return send(self, `/controls/groups/${bank}/${group}/${event.options.operation}`, args)
 			},
 		},
+		surface_set_mode: {
+			name: 'Dynamic Surface: Select Mode',
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Mode',
+					default: 'scene',
+					choices: [
+						{ id: 'scene', label: 'Scene' },
+						{ id: 'meta', label: 'Meta' },
+						{ id: 'media', label: 'Media' },
+						{ id: 'favs', label: 'Favslots' },
+					],
+				},
+			],
+			callback: (event) => self.setSurfaceMode(event.options.mode),
+		},
+		surface_change_page: {
+			name: 'Dynamic Surface: Previous/Next Control Page',
+			options: [
+				{
+					id: 'direction',
+					type: 'dropdown',
+					label: 'Direction',
+					default: 'next',
+					choices: [
+						{ id: 'previous', label: 'Previous' },
+						{ id: 'next', label: 'Next' },
+					],
+				},
+			],
+			callback: (event) => self.changeSurfacePage(event.options.direction),
+		},
+		surface_button: {
+			name: 'Dynamic Surface: Press/Release Button Slot',
+			options: [
+				positionField('slot', 'Dynamic button slot', '1', 1),
+				{ id: 'pressed', type: 'checkbox', label: 'Pressed', default: true },
+			],
+			callback: (event) =>
+				self.triggerSurfaceButton(parseInteger(event.options.slot, 'slot', 1, 18), event.options.pressed),
+		},
+		surface_adjust_rotary: {
+			name: 'Dynamic Surface: Adjust Rotary Slot',
+			options: [positionField('slot', 'Dynamic rotary slot', '1', 1), textField('delta', 'Adjustment', '0.05')],
+			callback: (event) =>
+				self.adjustSurfaceRotary(
+					parseInteger(event.options.slot, 'slot', 1, 6),
+					parseNumber(event.options.delta, 'adjustment'),
+				),
+		},
+		surface_reset_rotary: {
+			name: 'Dynamic Surface: Reset Rotary Slot',
+			options: [positionField('slot', 'Dynamic rotary slot', '1', 1)],
+			callback: (event) => self.resetSurfaceRotary(parseInteger(event.options.slot, 'slot', 1, 6)),
+		},
+		surface_touch_rotary: {
+			name: 'Dynamic Surface: Touch Rotary LCD',
+			description: 'Toggle scalar lock, or cycle the active component for XY and color controls.',
+			options: [positionField('slot', 'Dynamic rotary slot', '1', 1)],
+			callback: (event) => self.touchSurfaceRotary(parseInteger(event.options.slot, 'slot', 1, 6)),
+		},
+		surface_active_bank_operation: {
+			name: 'Dynamic Surface: Active Bank Default/Undo/Random',
+			options: [
+				{
+					id: 'operation',
+					type: 'dropdown',
+					label: 'Operation',
+					default: 'default',
+					choices: [
+						{ id: 'default', label: 'Default' },
+						{ id: 'undo', label: 'Undo' },
+						{ id: 'random', label: 'Random' },
+					],
+				},
+			],
+			callback: (event) => self.activeBankOperation(event.options.operation),
+		},
+		surface_all_bank_operation: {
+			name: 'Dynamic Surface: Global Default/Undo/Random',
+			options: [
+				{
+					id: 'operation',
+					type: 'dropdown',
+					label: 'Operation',
+					default: 'default',
+					choices: [
+						{ id: 'default', label: 'Default' },
+						{ id: 'undo', label: 'Undo' },
+						{ id: 'random', label: 'Random' },
+					],
+				},
+			],
+			callback: (event) => self.allBankOperation(event.options.operation),
+		},
+		surface_toggle_playlist: simpleAction('Dynamic Surface: Toggle Playlist Play', () => self.togglePlaylistPlaying()),
+		surface_toggle_render: simpleAction('Dynamic Surface: Toggle Rendering', () => self.toggleRendering()),
+		preset_clear_created: simpleAction('Preset: Clear Created Hold Indicator', () => self.clearPresetCreated()),
 	}
 }
 
@@ -369,7 +595,7 @@ export function UpdateActions(self: ModuleInstance): void {
 	self.setActionDefinitions(GetActionDefinitions(self))
 }
 
-function simpleAction(name: string, callback: () => void): CompanionActionDefinition<EmptyOptions> {
+function simpleAction(name: string, callback: () => void): CompanionActionDefinition<{ options: EmptyOptions }> {
 	return { name, options: [], callback }
 }
 
@@ -388,7 +614,11 @@ function controlAction(
 		callback: (event) => {
 			const suffix = event.options.raw ? '/raw' : ''
 			const values = parseControlValues(event.options.values, event.options.raw)
-			return send(self, `/controls/${bank}/${normalizeControlName(event.options.name)}${suffix}`, values.map(floatArg))
+			const controlName = normalizeControlName(event.options.name)
+			send(self, `/controls/${bank}/${controlName}${suffix}`, values.map(floatArg))
+			if (bank === 'meta' && !event.options.raw && values.length === 1) {
+				self.state.setMetaScalarValue(controlName, values[0])
+			}
 		},
 	}
 }
