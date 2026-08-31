@@ -73,7 +73,7 @@ Global slider and knob rotary templates cover positions 1 through 16. Global tog
 
 Dynamic surface actions compact active controls received through Synesthesia's **Global Addresses** output. Scene mode centers named toggles and bangs on the bottom button row and fills rotaries with sliders, knobs, dropdowns, XY controls, and colors. Meta mode centers its toggles and bangs on the bottom row; mirrors and Limit Colors are buttons while Low Color and High Color are RGB rotaries. Media mode contains media color, transform, playback, and overlay controls. Press Media a second time to show the configured exact-name source list; press it again to return to Media controls. Source Previous and Next remain available in both Media views. Unknown future Meta controls still use dimensional fallback discovery. Favs mode shows Fav 1 through 9 on its first page and Fav 2 through 10 on its second page.
 
-The dynamic slots are a logical Companion surface, not a physical-device requirement. Arrange as many slots as fit your Stream Deck or other Companion surface and use Controls Previous/Next for the rest. The full example maps 16 logical buttons and six logical rotaries; the compact example maps a smaller subset. Regular Stream Deck and Stream Deck XL models can use the same button actions, presets, feedbacks, and relative-adjust actions without rotary LCD interactions.
+The dynamic slots are logical controls, not a physical-device requirement. Map them onto any Companion-supported layout, spread them across multiple surfaces, or use only the controls that matter to a particular workflow. Controls Previous/Next makes smaller mappings practical. The full example maps 16 logical buttons and six logical rotaries; the compact example maps a smaller subset. These are example arrangements, not a compatibility list.
 
 Controls Previous/Next advances the shared surface page. Each control area changes only when that area has additional content: if one page can hold all toggles and bangs, they remain visible while the same navigation pages through additional rotaries. Random All stays at the start of the Scene and Meta context row and randomizes both banks. Random Selected affects only the active Scene or Meta bank. The supplied Stream Deck + XL page also keeps Global Default and Global Undo in fixed positions. Global Undo combines the available Scene undo and Meta undo operations in sequence.
 
@@ -90,7 +90,7 @@ The module includes plain, uncompressed page exports that can be reviewed before
 - [Stream Deck + XL dynamic surface](assets/streamdeck-plus-xl-synesthesia-surface.companionconfig) demonstrates the complete 16-button and six-rotary logical surface.
 - [Stream Deck + rotary surface](assets/streamdeck-plus-synesthesia-surface.companionconfig) is a compact starter page with the four modes, control paging, Global Default and Undo, and four dynamic rotaries.
 
-Import an example from Companion's Buttons page, then map its placeholder **Synesthesia** connection to your connection. The compact Stream Deck + page emphasizes rotary control because the device has fewer physical controls; add direct Favs or dynamic button actions to suit the controls you use most often.
+Import an example from Companion's Buttons page, then map its placeholder **Synesthesia** connection to your connection. Adapt, rearrange, or split the example to suit the surfaces and controls in your workflow.
 
 ## Troubleshooting
 

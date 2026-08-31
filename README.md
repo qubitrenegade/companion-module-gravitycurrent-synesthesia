@@ -21,7 +21,7 @@ Synesthesia's OSC API is documented at <https://synesthesia.live/docs/manual/osc
 - Synesthesia OSC Output enabled for state-aware controls.
 - **Global Addresses** and **Output Normalized Values** selected in Synesthesia for the dynamic Scene surface.
 
-The module does not require a particular Stream Deck model. Dynamic actions and variables can be arranged on any Companion-supported surface. Included example pages target the Stream Deck + and Stream Deck + XL because their rotary controls demonstrate the full interaction model.
+The module does not require a particular device or layout. Its actions, feedbacks, variables, logical button slots, and logical rotary slots can be arranged across any Companion-supported surface. The included Stream Deck + and Stream Deck + XL pages are two example mappings, not a compatibility list.
 
 ## Installation
 
