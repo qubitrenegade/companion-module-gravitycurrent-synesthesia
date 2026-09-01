@@ -21,5 +21,26 @@ for (const filename of examples) {
 
 		const referencedConnections = new Set([...content.matchAll(/"connectionId": "([^"]+)"/g)].map((match) => match[1]))
 		assert.deepEqual([...referencedConnections], ['synesthesia-example-connection'])
+
+		const controls = Object.values(example.page.controls).flatMap((row) => Object.values(row))
+		const modeFeedbacks = controls
+			.flatMap((control) => control.feedbacks ?? [])
+			.filter((feedback) => feedback.definitionId === 'surface_mode')
+		assert.deepEqual(modeFeedbacks.map((feedback) => feedback.options.mode.value).sort(), [
+			'favs',
+			'media',
+			'meta',
+			'scene',
+		])
+
+		for (const feedback of modeFeedbacks) {
+			const styles = new Map(
+				feedback.styleOverrides.map((style) => [`${style.elementId}:${style.elementProperty}`, style.override.value]),
+			)
+			assert.equal(styles.get('box0:color'), 0x00cc44)
+			assert.equal(styles.get('text0:color'), 0x000000)
+			assert.equal(styles.get('box0:borderColor'), 0xffffff)
+			assert.equal(styles.get('box0:borderWidth'), 4)
+		}
 	})
 }

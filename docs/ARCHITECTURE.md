@@ -60,7 +60,7 @@ Example surfaces reserve visual channels for distinct meanings:
 - Purple backgrounds indicate inactive latching toggles; green indicates on.
 - Amber backgrounds indicate momentary bangs.
 - Red indicates locked or error state.
-- A bright outline identifies the selected Scene, Meta, Media, or Favs mode.
+- A green background with a bright outline identifies the selected Scene, Meta, Media, or Favs mode.
 - Rotary borders are blue while adjustable and red while locked. The visible R/G/B or X/Y component label carries component information, so a second unlocked border color is unnecessary.
 
 This keeps button behavior, selected context, and lock state visually separate.

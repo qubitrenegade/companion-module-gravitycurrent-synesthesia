@@ -23,7 +23,7 @@ First public beta. Development packages such as `0.1.0-dev.27` are local test bu
 - Dynamic bangs send press and release values so they can be triggered repeatedly.
 - Toggle and rotary state follows normalized OSC feedback and then tracks local changes.
 - Listener readiness and feedback freshness are reported separately.
-- Button labels and placement are optimized for compact control surfaces.
+- Button labels and placement are optimized for compact control surfaces, with a green fill and bright outline identifying the selected performance mode.
 
 ### Known limitations
 

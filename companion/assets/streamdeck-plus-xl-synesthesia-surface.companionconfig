@@ -2169,6 +2169,24 @@
               "styleOverrides": [
                 {
                   "elementId": "box0",
+                  "elementProperty": "color",
+                  "override": {
+                    "isExpression": false,
+                    "value": 52292
+                  },
+                  "overrideId": "syn-v28-mode-scene-background-color"
+                },
+                {
+                  "elementId": "text0",
+                  "elementProperty": "color",
+                  "override": {
+                    "isExpression": false,
+                    "value": 0
+                  },
+                  "overrideId": "syn-v28-mode-scene-text-color"
+                },
+                {
+                  "elementId": "box0",
                   "elementProperty": "borderColor",
                   "override": {
                     "isExpression": false,
@@ -2426,6 +2444,24 @@
                 }
               },
               "styleOverrides": [
+                {
+                  "elementId": "box0",
+                  "elementProperty": "color",
+                  "override": {
+                    "isExpression": false,
+                    "value": 52292
+                  },
+                  "overrideId": "syn-v28-mode-meta-background-color"
+                },
+                {
+                  "elementId": "text0",
+                  "elementProperty": "color",
+                  "override": {
+                    "isExpression": false,
+                    "value": 0
+                  },
+                  "overrideId": "syn-v28-mode-meta-text-color"
+                },
                 {
                   "elementId": "box0",
                   "elementProperty": "borderColor",
@@ -2687,6 +2723,24 @@
               "styleOverrides": [
                 {
                   "elementId": "box0",
+                  "elementProperty": "color",
+                  "override": {
+                    "isExpression": false,
+                    "value": 52292
+                  },
+                  "overrideId": "syn-v28-mode-media-background-color"
+                },
+                {
+                  "elementId": "text0",
+                  "elementProperty": "color",
+                  "override": {
+                    "isExpression": false,
+                    "value": 0
+                  },
+                  "overrideId": "syn-v28-mode-media-text-color"
+                },
+                {
+                  "elementId": "box0",
                   "elementProperty": "borderColor",
                   "override": {
                     "isExpression": false,
@@ -2944,6 +2998,24 @@
                 }
               },
               "styleOverrides": [
+                {
+                  "elementId": "box0",
+                  "elementProperty": "color",
+                  "override": {
+                    "isExpression": false,
+                    "value": 52292
+                  },
+                  "overrideId": "syn-v28-mode-favs-background-color"
+                },
+                {
+                  "elementId": "text0",
+                  "elementProperty": "color",
+                  "override": {
+                    "isExpression": false,
+                    "value": 0
+                  },
+                  "overrideId": "syn-v28-mode-favs-text-color"
+                },
                 {
                   "elementId": "box0",
                   "elementProperty": "borderColor",
