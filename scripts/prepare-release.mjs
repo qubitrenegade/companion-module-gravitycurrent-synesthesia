@@ -12,16 +12,25 @@ const packagePath = new URL('../package.json', import.meta.url)
 const changelogPath = new URL('../CHANGELOG.md', import.meta.url)
 const packageJson = JSON.parse(await readFile(packagePath, 'utf8'))
 const changelog = await readFile(changelogPath, 'utf8')
-const heading = /^## Next release[^\n]*$/m
+const nextReleaseHeading = /^## Next release[^\n]*$/m
+const escapedVersion = version.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+const preparedHeading = new RegExp(`^## ${escapedVersion} - \\d{4}-\\d{2}-\\d{2}$`, 'm')
 
-if (!heading.test(changelog)) {
-	throw new Error('CHANGELOG.md is missing a Next release heading')
+if (!nextReleaseHeading.test(changelog) && !preparedHeading.test(changelog)) {
+	throw new Error(`CHANGELOG.md has neither a Next release heading nor a prepared ${version} heading`)
 }
 
 const date = new Date().toISOString().slice(0, 10)
 packageJson.version = version
+const preparedChangelog = nextReleaseHeading.test(changelog)
+	? changelog.replace(nextReleaseHeading, `## ${version} - ${date}`)
+	: changelog
 
 await writeFile(packagePath, `${JSON.stringify(packageJson, null, '\t')}\n`)
-await writeFile(changelogPath, changelog.replace(heading, `## ${version} - ${date}`))
+await writeFile(changelogPath, preparedChangelog)
 
-console.log(`Prepared ${version}. Review package.json and CHANGELOG.md before committing.`)
+console.log(
+	preparedChangelog === changelog
+		? `${version} was already prepared. package.json and CHANGELOG.md are consistent.`
+		: `Prepared ${version}. Review package.json and CHANGELOG.md before committing.`,
+)

@@ -15,7 +15,7 @@ Follow the official Bitfocus guides for [releasing a module](https://companion.f
 RELEASE_VERSION=1.0.0-beta.1 yarn release:prepare
 ```
 
-The command validates the semantic version, updates `package.json`, and stamps the prepared section in `CHANGELOG.md`. Review both changes before committing. It does not create a tag, push a branch, or submit anything externally.
+The command validates the semantic version, updates `package.json`, and stamps the prepared section in `CHANGELOG.md`. It is safe to rerun for the same already-prepared version. Review both files before committing. It does not create a tag, push a branch, or submit anything externally.
 
 ## First public release
 
