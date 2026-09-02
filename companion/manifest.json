@@ -7,8 +7,8 @@
 	"description": "Control Synesthesia Pro and receive state through OSC",
 	"version": "0.0.0",
 	"license": "MIT",
-	"repository": "git+https://github.com/qubitrenegade/companion-module-gravitycurrent-synesthesia.git",
-	"bugs": "https://github.com/qubitrenegade/companion-module-gravitycurrent-synesthesia/issues",
+	"repository": "git+https://github.com/bitfocus/companion-module-gravitycurrent-synesthesia.git",
+	"bugs": "https://github.com/bitfocus/companion-module-gravitycurrent-synesthesia/issues",
 	"maintainers": [
 		{
 			"name": "qubitrenegade",
